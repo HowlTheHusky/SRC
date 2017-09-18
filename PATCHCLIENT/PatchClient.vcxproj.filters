@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3038e049-bbfc-427b-911a-90af8b61c2e9}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{71b78906-dce5-4dba-95d8-4dfa05d13de1}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{0f6c29bc-c96c-45e1-9684-eb749ac4ce8e}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Ctrl">
+      <UniqueIdentifier>{312b0c0b-106a-47f7-a257-bf2f52dc98db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\_Common\debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgOption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_Common\file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="httpdownload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_Common\HwOption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchClientDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="patchmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_Common\vutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnST.cpp">
+      <Filter>Ctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="HyperLink.cpp">
+      <Filter>Ctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>Ctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="Picture.cpp">
+      <Filter>Ctrl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PatchClient.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\_Common\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgOption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_Common\file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="httpdownload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_Common\HwOption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchClientDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="patchmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VersionCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_Common\vutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnST.h">
+      <Filter>Ctrl</Filter>
+    </ClInclude>
+    <ClInclude Include="HyperLink.h">
+      <Filter>Ctrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>Ctrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Picture.h">
+      <Filter>Ctrl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Image\Cancel00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Cancel01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr1_jp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr1_jp_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr2_jp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr2_jp_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr3_jp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr3_jp_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr4_jp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\chr4_jp_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Close00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Close01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\flyff_icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\main.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\main_jp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\main_th.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Ok00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Ok01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\option.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Option00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Option01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\option_jp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\PatchClient.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Start00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image\Start01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Hand.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
