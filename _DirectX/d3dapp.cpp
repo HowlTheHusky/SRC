@@ -79,6 +79,7 @@ void CD3DApplication::SetApp()
 
 CD3DApplication::CD3DApplication()
 {
+	m_movingOrSizingWindow = false;
     g_pD3DApp           = this;
     m_pD3D              = NULL;
     m_pd3dDevice        = NULL;
@@ -575,8 +576,16 @@ LRESULT CD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 
         case WM_ENTERSIZEMOVE:
             // Halt frame movement while the app is sizing or moving
-            Pause( true );
-            break;
+			SetTimer(hWnd, 1 , 0x0000000A, 0);
+			m_movingOrSizingWindow = true;
+			break;
+			case WM_TIMER;
+			if(wParam == 1 && m_bActive)	
+			{
+			if (FAILED(Render3DEnvironment()))
+				SendMessage(m_hWnd, WM_CLOSE, 0 , 0 );
+			}
+	break;
 
         case WM_SIZE:
             // Pick up possible changes to window style due to maximize, etc.
@@ -629,8 +638,10 @@ LRESULT CD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
             }
             break;
         case WM_EXITSIZEMOVE:
-            Pause( false );
-	        HandlePossibleSizeChange();
+            //Pause( false );
+	        //HandlePossibleSizeChange();
+			Killtimer(hWnd, 1);
+			m_movingOrSizingWindow = false;
             break;
         case WM_SETCURSOR:
 #ifdef __NONE_CUSTOM_CURSOR
@@ -1672,7 +1683,7 @@ HRESULT CD3DApplication::Render3DEnvironment()
 #endif
 	
 #if defined(__CLIENT) 
-	if( IsDrawTiming() )
+	if( IsDrawTiming() || m_movingOrSizingWindow)
 #endif
 	{
 		// Render the scene as normal

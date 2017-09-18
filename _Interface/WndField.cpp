@@ -1780,6 +1780,50 @@ BOOL CWndInventory::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 						else
 							g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_REDCHIP) ) );
 					}
+					#ifdef __EXTENDED_CURRENCY
+					else if(lpCharacter->m_nVenderType == 2)
+					{
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipFarmCost() >= 0) //¡¾¢¬¢¬ACI¡¤A¢¥A C¡Æ¢¬nAC A¡§¡Æ©ø¨ùo AI¡íoA¡í ¡Æ¢®Ao¡Æi AO¢¥AAo E¢çAI.
+						{
+							SAFE_DELETE( m_pWndConfirmBuy );
+							m_pWndConfirmBuy = new CWndConfirmBuy;
+							m_pWndConfirmBuy->m_pItemElem = (CItemElem*)lpShortcut->m_dwData;
+							m_pWndConfirmBuy->m_nBuyType = 2;
+							m_pWndConfirmBuy->Initialize( this, APP_CONFIRM_BUY_ );
+							bForbid = FALSE;
+						}
+						else
+							g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_PERIN) ) );
+					}
+					else if(lpCharacter->m_nVenderType == 3)
+					{
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLUE ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipLgCost() >= 0) //¡¾¢¬¢¬ACI¡¤A¢¥A C¡Æ¢¬nAC A¡§¡Æ©ø¨ùo AI¡íoA¡í ¡Æ¢®Ao¡Æi AO¢¥AAo E¢çAI.
+						{
+							SAFE_DELETE( m_pWndConfirmBuy );
+							m_pWndConfirmBuy = new CWndConfirmBuy;
+							m_pWndConfirmBuy->m_pItemElem = (CItemElem*)lpShortcut->m_dwData;
+							m_pWndConfirmBuy->m_nBuyType = 3;
+							m_pWndConfirmBuy->Initialize( this, APP_CONFIRM_BUY_ );
+							bForbid = FALSE;
+						}
+						else
+							g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_BLUE) ) );
+					}
+					else if(lpCharacter->m_nVenderType == 4)
+					{
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLACK ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipDonateCost() >= 0) //¡¾¢¬¢¬ACI¡¤A¢¥A C¡Æ¢¬nAC A¡§¡Æ©ø¨ùo AI¡íoA¡í ¡Æ¢®Ao¡Æi AO¢¥AAo E¢çAI.
+						{
+							SAFE_DELETE( m_pWndConfirmBuy );
+							m_pWndConfirmBuy = new CWndConfirmBuy;
+							m_pWndConfirmBuy->m_pItemElem = (CItemElem*)lpShortcut->m_dwData;
+							m_pWndConfirmBuy->m_nBuyType = 4;
+							m_pWndConfirmBuy->Initialize( this, APP_CONFIRM_BUY_ );
+							bForbid = FALSE;
+						}
+						else
+							g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_BLACK) ) );
+					}
+#endif // __EXTENDED_CURRENCY
 					else if(lpCharacter->m_nVenderType == 0)
 					{
 #ifdef __SHOP_COST_RATE
@@ -13452,7 +13496,7 @@ void CWndInventory::RunUpgrade( CItemBase* pItem )
 				if( ( static_cast<CItemElem*>( pItem ) )->IsCollector( TRUE ) || pItem->GetProp()->dwItemKind2 == IK2_JEWELRY )
 				{
 					m_pUpgradeItem = pItem;
-					m_dwEnchantWaitTime = g_tmCurrent + SEC(4);
+					m_dwEnchantWaitTime = g_tmCurrent + SEC(0.5);
 					return;
 				}
 #endif	// __SYS_COLLECTING

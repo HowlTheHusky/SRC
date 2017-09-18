@@ -7,6 +7,8 @@
 #if !( defined(__DBSERVER) || defined(__VPW) ) 
 	#include "project.h"
 #endif	// __DBSERVER
+TID_TOOLTIP_PENYA
+DST_PENYA
 
 CString GetLangFileName( int nLang, int nType )
 {
@@ -221,7 +223,7 @@ BOOL CProject::LoadPropMover( LPCTSTR lpszFileName )
 		pProperty->wElementAtk			= static_cast<short>(scanner.GetNumber());				// 정수타입과 short	타입이 틀려서 타입 변환을 허용함.
 
 		pProperty->dwHideLevel			= scanner.GetNumber();
-		pProperty->fSpeed 				= pProperty->dwAI == AII_PET ? scanner.GetFloat() * 3.0f : scanner.GetFloat();
+		pProperty->fSpeed 				= pProperty->dwAI == AII_PET ? scanner.GetFloat() * 3.00f : scanner.GetFloat();
 		pProperty->dwShelter			= scanner.GetNumber();
 		pProperty->dwFlying				= scanner.GetNumber();
 		pProperty->dwJumpIng			= scanner.GetNumber();

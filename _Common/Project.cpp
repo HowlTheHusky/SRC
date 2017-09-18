@@ -317,6 +317,22 @@ CProject::~CProject()
 			for( i = 0; i < lpCharacter->m_venderItemAry2[ j ].GetSize(); i++)
 				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry2[ j ].GetAt(i) );
 		}
+			#ifdef __EXTENDED_CURRENCY		
+		for( j = 0; j < MAX_VENDOR_INVENTORY_TAB; j++ )
+		{
+			for( i = 0; i < lpCharacter->m_venderItemAry4[ j ].GetSize(); i++)
+				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry4[ j ].GetAt(i) );
+		}
+		for( j = 0; j < MAX_VENDOR_INVENTORY_TAB; j++ )
+		{
+			for( i = 0; i < lpCharacter->m_venderItemAry5[ j ].GetSize(); i++)
+				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry5[ j ].GetAt(i) );
+		}
+		for( j = 0; j < MAX_VENDOR_INVENTORY_TAB; j++ )
+		{
+			for( i = 0; i < lpCharacter->m_venderItemAry6[ j ].GetSize(); i++)
+				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry6[ j ].GetAt(i) );
+		}
 #endif //__CSC_VER11_3
 		safe_delete( lpCharacter );
 	}
@@ -3132,6 +3148,38 @@ BOOL CProject::LoadCharacter( LPCTSTR szFileName )
 				pVendorItem->m_dwItemId = dwId;
 				lpCharacter->m_venderItemAry2[ nSlot ].Add( pVendorItem );
 			}
+			#ifdef __EXTENDED_CURRENCY			
+			else if( script.Token == "AddVenderItem4" || script.Token == "AddVenderItem4")
+			{
+				script.GetToken(); // (
+				int nSlot = script.GetNumber(); script.GetToken(); // 
+				DWORD dwId = script.GetNumber(); script.GetToken(); //
+
+				LPVENDOR_ITEM pVendorItem = new VENDOR_ITEM;
+				pVendorItem->m_dwItemId = dwId;
+				lpCharacter->m_venderItemAry4[ nSlot ].Add( pVendorItem );
+			}
+			else if( script.Token == "AddVenderItem5" || script.Token == "AddVenderItem5")
+			{
+				script.GetToken(); // (
+				int nSlot = script.GetNumber(); script.GetToken(); // 
+				DWORD dwId = script.GetNumber(); script.GetToken(); //
+
+				LPVENDOR_ITEM pVendorItem = new VENDOR_ITEM;
+				pVendorItem->m_dwItemId = dwId;
+				lpCharacter->m_venderItemAry5[ nSlot ].Add( pVendorItem );
+			} 
+			else if( script.Token == "AddVenderItem6" || script.Token == "AddVenderItem6")
+			{
+				script.GetToken(); // (
+				int nSlot = script.GetNumber(); script.GetToken(); // 
+				DWORD dwId = script.GetNumber(); script.GetToken(); //
+
+				LPVENDOR_ITEM pVendorItem = new VENDOR_ITEM;
+				pVendorItem->m_dwItemId = dwId;
+				lpCharacter->m_venderItemAry6[ nSlot ].Add( pVendorItem );
+			}
+#endif // __EXTENDED_CURRENCY
 			else if( script.Token == "SetVenderType" )
 			{
 				script.GetToken();

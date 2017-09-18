@@ -330,6 +330,24 @@ void CWndItemCtrl::RanderIcon( C2DRender* p2DRender, CItemElem* pItemElem, int x
 				if( bRander == 0 && g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_RED ) < (int)pItemElem->GetChipCost() )
 					bRander = 1;
 			}
+			#ifdef __EXTENDED_CURRENCY
+			else if(lpCharacter && lpCharacter->m_nVenderType == 2)
+			{
+				if( bRander == 0 && g_pPlayer->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) < (int)pItemElem->GetChipFarmCost() )
+					bRander = 1;
+			}
+			else if(lpCharacter && lpCharacter->m_nVenderType == 3)
+			{
+				if( bRander == 0 && g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLUE ) < (int)pItemElem->GetChipLgCost() )
+					bRander = 1;
+			}
+			else if(lpCharacter && lpCharacter->m_nVenderType == 4)
+			{
+				if( bRander == 0 && g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLACK ) < (int)pItemElem->GetChipDonateCost() )
+					bRander = 1;
+			}
+
+#endif // __EXTENDED_CURRENCY
 		}
 		else
 		{

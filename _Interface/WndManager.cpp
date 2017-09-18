@@ -4336,6 +4336,9 @@ struct DST_STRING
 
 static DST_STRING g_DstString[] = 
 {
+	#ifdef __DST_PENYA 
+    DST_PENYA                   , TID_TOOLTIP_PENYA,  
+	#endif //__DST_PENYA  
 	DST_STR                     , TID_TOOLTIP_STR, 
 	DST_DEX                     , TID_TOOLTIP_DEX,
 	DST_INT                     , TID_TOOLTIP_INT,
@@ -5663,6 +5666,7 @@ void CWndMgr::PutItemGold( CMover* pMover, CItemElem* pItemElem, CEditString* pE
 {
 	CString str;
 	CString strTemp;
+
 	if( flag == APP_SHOP_ ) // 가격은 나는 안나오게 하고 상점 인터페이스에서는 나오게함 42은 상점의 Invantory 개수
 	{	// 상점
 		if( pItemElem->GetCost() != 0xffffffff ) 
@@ -5688,6 +5692,16 @@ void CWndMgr::PutItemGold( CMover* pMover, CItemElem* pItemElem, CEditString* pE
 				}
 				else if(lpCharacter->m_nVenderType == 1)
 					nCost = pItemElem->GetChipCost();
+				#ifdef __EXTENDED_CURRENCY
+				else if(lpCharacter->m_nVenderType == 2)
+					nCost = pItemElem->GetChipFarmCost();
+				
+				else if(lpCharacter->m_nVenderType == 3)
+					nCost = pItemElem->GetChipLgCost();
+				
+				else if(lpCharacter->m_nVenderType == 4)
+					nCost = pItemElem->GetChipDonateCost();
+				#endif // __EXTENDED_CURRENCY
 			}
 #else //__CSC_VER11_3
 			int nCost = pItemElem->GetCost();
@@ -5725,6 +5739,26 @@ void CWndMgr::PutItemGold( CMover* pMover, CItemElem* pItemElem, CEditString* pE
 				temp.Format(" %s", prj.GetText(TID_GAME_REDCHIP));
 				strTemp += temp;
 			}
+			#ifdef __EXTENDED_CURRENCY
+			if(lpCharacter && lpCharacter->m_nVenderType == 2)
+			{
+				CString temp;
+				temp.Format(" %s", prj.GetText( TID_GAME_PERIN ));
+				strTemp += temp;
+			}
+			if(lpCharacter && lpCharacter->m_nVenderType == 3)
+			{
+				CString temp;
+				temp.Format(" %s", prj.GetText( TID_GAME_BLUE ));
+				strTemp += temp;
+			}
+			if(lpCharacter && lpCharacter->m_nVenderType == 4)
+			{
+				CString temp;
+				temp.Format(" %s", prj.GetText( TID_GAME_BLACK ));
+				strTemp += temp;
+			}
+#endif // __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 			pEdit->AddString( "\n" );
 			pEdit->AddString( strTemp, dwItemColor[g_Option.m_nToolTipText].dwGold );

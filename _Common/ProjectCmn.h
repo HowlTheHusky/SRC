@@ -234,7 +234,7 @@ struct ItemProp : CtrlProp
 {
 	DWORD	dwMotion;			// 동작 
 	DWORD	dwNum;				// 기본생성개수	
-	DWORD	dwPackMax;			// 최대곂침개수	
+	DWORD	dwPackMax;			// 최대곂침개�?
 	DWORD	dwItemKind1;		// 1차아이템종류	
 	DWORD	dwItemKind2;		// 2차아이템종류	
 	DWORD	dwItemKind3;		// 3차아이템종류	

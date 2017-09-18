@@ -1365,6 +1365,68 @@ void CMover::ProcessRegenItem()
 						}
 					}
 				}
+				#ifdef __EXTENDED_CURRENCY				
+				else if(pCharacter->m_nVenderType == 2 )
+				{
+					if(pCharacter->m_venderItemAry4[i].GetSize())
+					{
+						fShop	= TRUE;
+						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						for( int j = 0; j < pCharacter->m_venderItemAry4[i].GetSize(); j++ )
+						{
+							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry4[i].GetAt(j);
+							CItemElem itemElem;
+							itemElem.m_dwItemId	= pVendor->m_dwItemId;
+							itemElem.m_nItemNum	= (short)( prj.GetItemProp( pVendor->m_dwItemId )->dwPackMax );
+							itemElem.m_nHitPoint = prj.GetItemProp( pVendor->m_dwItemId )->dwEndurance;
+							if( (int)itemElem.GetChipFarmCost() < 1 )
+								Error( "Farm Chip cost < 1 : npc = %s, item = %d", pCharacter->m_szKey, pVendor->m_dwItemId );
+							else
+								m_ShopInventory[i]->Add( &itemElem );
+						}
+					}
+				}
+				else if(pCharacter->m_nVenderType == 3 )
+				{
+                  if(pCharacter->m_venderItemAry5[i].GetSize())
+					{
+						fShop	= TRUE;
+						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						for( int j = 0; j < pCharacter->m_venderItemAry5[i].GetSize(); j++ )
+						{
+							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry5[i].GetAt(j);
+							CItemElem itemElem;
+							itemElem.m_dwItemId	= pVendor->m_dwItemId;
+							itemElem.m_nItemNum	= (short)( prj.GetItemProp( pVendor->m_dwItemId )->dwPackMax );
+							itemElem.m_nHitPoint = prj.GetItemProp( pVendor->m_dwItemId )->dwEndurance;
+							if( (int)itemElem.GetChipLgCost() < 1 )
+								Error( "LG Chip cost < 1 : npc = %s, item = %d", pCharacter->m_szKey, pVendor->m_dwItemId );
+							else
+								m_ShopInventory[i]->Add( &itemElem );
+						}
+					}
+				}
+				else if(pCharacter->m_nVenderType == 4 )
+				{
+                  if(pCharacter->m_venderItemAry6[i].GetSize())
+					{
+						fShop	= TRUE;
+						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						for( int j = 0; j < pCharacter->m_venderItemAry6[i].GetSize(); j++ )
+						{
+							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry6[i].GetAt(j);
+							CItemElem itemElem;
+							itemElem.m_dwItemId	= pVendor->m_dwItemId;
+							itemElem.m_nItemNum	= (short)( prj.GetItemProp( pVendor->m_dwItemId )->dwPackMax );
+							itemElem.m_nHitPoint = prj.GetItemProp( pVendor->m_dwItemId )->dwEndurance;
+							if( (int)itemElem.GetChipDonateCost() < 1 )
+								Error( "Donate Chip cost < 1 : npc = %s, item = %d", pCharacter->m_szKey, pVendor->m_dwItemId );
+							else
+								m_ShopInventory[i]->Add( &itemElem );
+						}
+					}
+				}
+#endif // __EXTENDED_CURRENCY
 				else
 				{
 #endif //__CSC_VER11_3
@@ -1495,6 +1557,9 @@ void CMover::InitProp( BOOL bInitAI )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i ];
 			lpSkill->dwSkill = pSkillProp->dwID;
+			#ifdef	__AUTO_SKILL_MAX
+			lpSkill->dwLevel = pSkillProp->dwExpertMax;
+			#endif	//__AUTO_SKILL_MAX
 		}
 	}
 
@@ -1586,6 +1651,9 @@ void CMover::InitLevel( int nJob, LONG nLevel, BOOL bGamma )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i ];
 			lpSkill->dwSkill = pSkillProp->dwID;
+			#ifdef	__AUTO_SKILL_MAX
+			lpSkill->dwLevel = pSkillProp->dwExpertMax;
+			#endif	//__AUTO_SKILL_MAX
 		}
 		// 2. 기본 능력치 초기화 
 		m_nLevel	= 1;
@@ -7615,7 +7683,9 @@ BOOL CMover::DropItem( CMover* pAttacker )
 				}
 			}
 		}
-
+#ifdef __DST_PENYA 
+        int npenyafaktor = 1; 
+#endif // __DST_PENYA  
 		int nloop = 1;
 		BOOL bUnique = FALSE;
 		if( pAttacker->m_idparty ) // 내가 파티에 참여 여부
@@ -7694,6 +7764,12 @@ BOOL CMover::DropItem( CMover* pAttacker )
 #endif // __II_SYS_SYS_SCR_GET
 #ifdef __DST_GIFTBOX
 			nloop += pAttacker->GetAdjParam( DST_GIFTBOX );
+			#ifdef __DST_PENYA 
+            if( pAttacker->GetAdjParam( DST_PENYA ) > 0 ) 
+            { 
+                npenyafaktor *= pAttacker->GetAdjParam( DST_PENYA ); 
+            } 
+#endif // __DST_PENYA  
 #endif // __DST_GIFTBOX
 		D3DXVECTOR3 vPos;		// 드랍될 위치.
 
@@ -7855,7 +7931,11 @@ BOOL CMover::DropItem( CMover* pAttacker )
 						{
 							int	nSeedID = 0;
 							int nNumGold = lpDropItem->dwNumber + xRandom( lpDropItem->dwNumber2 - lpDropItem->dwNumber );	// Number ~ Number2 사이의 랜덤값.
-							nNumGold	= nNumGold * nPenyaRate / 100;
+							#ifdef __DST_PENYA 
+                            nNumGold    = nNumGold * nPenyaRate / 100 * npenyafaktor; 
+#else // __DST_PENYA 
+                            nNumGold    = nNumGold * nPenyaRate / 100; 
+#endif // __DST_PENYA  
 	#ifdef __S1108_BACK_END_SYSTEM
 							nNumGold	= (int)( nNumGold * prj.m_fGoldDropRate * lpMoverProp->m_fPenya_Rate );
 							if( nNumGold == 0 )
@@ -8436,6 +8516,26 @@ BOOL CMover::IsVendorNPC()
 		if( pCharacter->m_venderItemAry2[i].GetSize() )
 			return TRUE;
 	}
+	#ifdef __EXTENDED_CURRENCY // IKnow zu viele for schleifen hdf XD	
+	if(pCharacter->m_nVenderType == 2) // Farm Chips
+	for( int i = 0; i < MAX_VENDOR_INVENTORY_TAB; i++ )
+	{
+		if( pCharacter->m_venderItemAry4[i].GetSize() )
+			return TRUE;
+	}
+	if(pCharacter->m_nVenderType == 3) // Lg Chips
+    for( int i = 0; i < MAX_VENDOR_INVENTORY_TAB; i++ )
+	{
+		if( pCharacter->m_venderItemAry5[i].GetSize() )
+			return TRUE;
+	}
+	if(pCharacter->m_nVenderType == 4) // Donate Chips
+	for( int i = 0; i < MAX_VENDOR_INVENTORY_TAB; i++ )
+	{
+		if( pCharacter->m_venderItemAry6[i].GetSize() )
+			return TRUE;
+	}
+#endif // __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 	return FALSE;
 }
@@ -11745,6 +11845,53 @@ BOOL CMover::SetDataMTE( const char* alphaTex, const char* eff2ndTex )
 }
 
 #endif //__BS_EFFECT_LUA
+
+#ifdef __EXTENDED_CURRENCY
+int CMover::GetChipFarmNum()
+{
+	int nCount	= 0;
+	for( int i = 0; i < m_Inventory.GetMax(); i++ )
+	{
+		CItemElem* pItem	= static_cast<CItemElem*>( GetItemId( i ) );
+		if( pItem && ::IsUsableItem( pItem ) )
+		{
+			if( pItem->GetProp()->dwID == II_SYS_SYS_SCR_PERIN )
+				nCount	+= pItem->m_nItemNum;
+		}
+	}
+	return nCount;
+}
+
+int CMover::GetChipLgNum()
+{
+	int nCount	= 0;
+	for( int i = 0; i < m_Inventory.GetMax(); i++ )
+	{
+		CItemElem* pItem	= static_cast<CItemElem*>( GetItemId( i ) );
+		if( pItem && ::IsUsableItem( pItem ) )
+		{
+			if( pItem->GetProp()->dwID == II_CHP_BLUE )
+				nCount	+= pItem->m_nItemNum;
+		}
+	}
+	return nCount;
+}
+
+int CMover::GetChipDonateNum()
+{
+	int nCount	= 0;
+	for( int i = 0; i < m_Inventory.GetMax(); i++ )
+	{
+		CItemElem* pItem	= static_cast<CItemElem*>( GetItemId( i ) );
+		if( pItem && ::IsUsableItem( pItem ) )
+		{
+			if( pItem->GetProp()->dwID == II_CHP_BLACK )
+				nCount	+= pItem->m_nItemNum;
+		}
+	}
+	return nCount;
+}
+#endif // __EXTENDED_CURRENCY
 
 #if __VER >= 12 // __LORD
 int CMover::GetPerinNum( void )

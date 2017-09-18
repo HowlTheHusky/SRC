@@ -6,6 +6,8 @@
 #define __FIX_GET_HP_MP_FP_POINT
 #define	__APP_TELEPORTER 
 //#define __MONSTER_NOTICE
+#define __DST_PENYA
+#define __EXTENDED_CURRENCY
 
 #if !defined( __TESTSERVER ) && !defined( __MAINSERVER )
 	#define __INTERNALSERVER

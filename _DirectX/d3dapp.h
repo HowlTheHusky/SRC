@@ -50,6 +50,8 @@ enum APPMSGTYPE { MSG_NONE, MSGERR_APPMUSTEXIT, MSGWARN_SWITCHEDTOREF };
 //-----------------------------------------------------------------------------
 class CD3DApplication
 {
+	private:
+    bool m_movingOrSizingWindow;
 public:
     CD3DSettings      m_d3dSettings;
 	bool              m_bFakeFullMode;	// 가상 풀화면 - 신용카드 결재시 필요, 패치클라이언트도 패치해야함

@@ -324,6 +324,14 @@ void CWndConfirmBuy::OnChangeBuyCount( DWORD dwBuy )
 	}
 	else if(m_nBuyType == 1)
 		dwCost = m_pItemElem->GetChipCost();
+	#ifdef __EXTENDED_CURRENCY
+	else if(m_nBuyType == 2)
+		dwCost = m_pItemElem->GetChipFarmCost();
+	else if(m_nBuyType == 3)
+		dwCost = m_pItemElem->GetChipLgCost();
+	else if(m_nBuyType == 4)
+		dwCost = m_pItemElem->GetChipDonateCost();
+#endif // __EXTENDED_CURRENCY
 #else //__CSC_VER11_3
 	dwCost = m_pItemElem->GetCost();
 #endif //__CSC_VER11_3
@@ -399,6 +407,14 @@ BOOL CWndConfirmBuy::Initialize( CWndBase* pWndParent, DWORD dwWndId )
 	}
 	else if(m_nBuyType == 1)
 		dwCost = m_pItemElem->GetChipCost();
+	#ifdef __EXTENDED_CURRENCY
+	else if(m_nBuyType == 2)
+		dwCost = m_pItemElem->GetChipFarmCost();
+	else if(m_nBuyType == 3)
+		dwCost = m_pItemElem->GetChipLgCost();
+	else if(m_nBuyType == 4)
+		dwCost = m_pItemElem->GetChipDonateCost();
+#endif // __EXTENDED_CURRENCY
 #else //__CSC_VER11_3
 	DWORD dwCost = m_pItemElem->GetCost();
 #endif //__CSC_VER11_3
@@ -559,6 +575,58 @@ void CWndConfirmBuy::OnOK()
 	//아래 메세지 처리 할 것
 	DWORD dwCost;
 	int nBuy;
+	#ifdef __EXTENDED_CURRENCY	
+	if(m_nBuyType == 4)
+	{
+		dwCost = m_pItemElem->GetChipDonateCost();
+		if( m_pItemElem->m_nItemNum < 1 || dwCost == 0 )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_DIAG_0006) ) );	// ´U¸￥ ≫c¿eAU¿¡°O ÆE·E½A´I´U.
+			return;
+		}
+
+		nBuy = atoi( m_pEdit->GetString() );
+		if( (int)( (nBuy * dwCost) ) > g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLACK ) )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_BLACK ) ) );	// A¨AI ºIA·CO´I´U.	
+			return;
+		}
+	}
+
+	else if(m_nBuyType == 3)
+	{
+		dwCost = m_pItemElem->GetChipLgCost();
+		if( m_pItemElem->m_nItemNum < 1 || dwCost == 0 )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_DIAG_0006) ) );	// ´U¸￥ ≫c¿eAU¿¡°O ÆE·E½A´I´U.
+			return;
+		}
+
+		nBuy = atoi( m_pEdit->GetString() );
+		if( (int)( (nBuy * dwCost) ) > g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLUE ) )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_BLUE) ) );	// A¨AI ºIA·CO´I´U.	
+			return;
+		}
+	}
+
+	else if(m_nBuyType == 2)
+	{
+		dwCost = m_pItemElem->GetChipFarmCost();
+		if( m_pItemElem->m_nItemNum < 1 || dwCost == 0 )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_DIAG_0006) ) );	// ´U¸￥ ≫c¿eAU¿¡°O ÆE·E½A´I´U.
+			return;
+		}
+
+		nBuy = atoi( m_pEdit->GetString() );
+		if( (int)( (nBuy * dwCost) ) > g_pPlayer->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) )
+		{
+			g_WndMng.OpenMessageBox( _T( prj.GetText(TID_GAME_CANNT_BY_PERIN) ) );	// A¨AI ºIA·CO´I´U.	
+			return;
+		}
+	}
+#endif // __EXTENDED_CURRENCY
 
 	if(m_nBuyType == 1)
 	{
@@ -643,6 +711,14 @@ void CWndConfirmBuy::OnOK()
 
 	CWndTabCtrl* pTabCtrl	= (CWndTabCtrl*)pWndShop->GetDlgItem( WIDC_INVENTORY );
 	CHAR cTab	= (CHAR)pTabCtrl->GetCurSel();
+	#ifdef __EXTENDED_CURRENCY
+else if(m_nBuyType == 2)
+		g_DPlay.SendBuyChipItem( cTab, (BYTE)( m_pItemElem->m_dwObjId ), nBuy, m_dwItemId );
+else if(m_nBuyType == 3)
+		g_DPlay.SendBuyChipItem( cTab, (BYTE)( m_pItemElem->m_dwObjId ), nBuy, m_dwItemId );
+else if(m_nBuyType == 4)
+		g_DPlay.SendBuyChipItem( cTab, (BYTE)( m_pItemElem->m_dwObjId ), nBuy, m_dwItemId );
+#endif // __EXTENDED_CURRENCY
 #if __VER >= 11 // __CSC_VER11_3
 	if(m_nBuyType == 0)
 		g_DPlay.SendBuyItem( cTab, (BYTE)( m_pItemElem->m_dwObjId ), nBuy, m_dwItemId );

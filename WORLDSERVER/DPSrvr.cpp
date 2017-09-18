@@ -2608,9 +2608,16 @@ void CDPSrvr::OnDoUseItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpBuf
 	OBJID objid;
 	int	  nPart;
 
-	ar >> dwData >> objid >> nPart;
+ar >> dwData >> objid >> nPart;
 	if( nPart >= MAX_HUMAN_PARTS )	
 		return;
+		CUser* pUser = g_UserMng.GetUser( dpidCache, dpidUser );
+	//Crash packet
+	if ( nPart > 30 || dwData < 0 )	{
+			Error( "CDPSrvr::OnDoUseItem : Crash Try -> [Player ID: %07d], [Player Name: %s], [Packet used: %d,%d,%d]",
+						pUser->m_idPlayer, pUser->GetName(), dwData, objid, nPart );
+		return;
+	}
 
 	CUser* pUser = g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) == FALSE )
@@ -2815,6 +2822,13 @@ void CDPSrvr::OnBuyItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpBuf, 
 	ar >> cTab >> nId >> nNum >> dwItemId;
 	if( cTab >= MAX_VENDOR_INVENTORY_TAB || nNum < 1 )
 		return;
+	CUser* pUser	= g_UserMng.GetUser( dpidCache, dpidUser );
+	//CRASH
+	if( cTab > 3 || cTab < 0 || nId < 0 || nNum <= 0 || nNum > 9999 || dwItemId < 0 ) {
+		Error( "CDPSrvr::OnBuyItem : Crash Try -> [Player ID: %07d], [Player Name: %s], [Packet used: %d,%d,%d,%d]",
+						pUser->m_idPlayer, pUser->GetName(), cTab, nId, nNum, dwItemId );
+		return;
+	}
 
 	CUser* pUser	= g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) && pUser->m_vtInfo.GetOther() )
@@ -2956,14 +2970,26 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 	ar >> cTab >> nId >> nNum >> dwItemId;
 	if( cTab >= MAX_VENDOR_INVENTORY_TAB || nNum < 1 )
 		return;
+	CUser* pUser = g_UserMng.GetUser( dpidCache, dpidUser );
+	//CRASH
+	if( cTab > 3 || cTab < 0 || nId < 0 || nNum <= 0 || nNum > 9999 || dwItemId < 0 ) {
+		Error( "CDPSrvr::OnBuyItem : Crash Try -> [Player ID: %07d], [Player Name: %s], [Packet used: %d,%d,%d,%d]",
+						pUser->m_idPlayer, pUser->GetName(), cTab, nId, nNum, dwItemId );
+		return;
+	}
 
 	CUser* pUser	= g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) && pUser->m_vtInfo.GetOther() )
 	{
 		CMover* pVendor = pUser->m_vtInfo.GetOther();
 		LPCHARACTER lpChar = prj.GetCharacter( pVendor->m_szCharacterKey );
-		if( lpChar && lpChar->m_nVenderType != 1 )	// 1 - 칩 상인
+		#ifdef __EXTENDED_CURRENCY		
+		if( lpChar && lpChar->m_nVenderType != 1 && lpChar->m_nVenderType != 2 && lpChar->m_nVenderType != 3 && lpChar->m_nVenderType != 4)	// 1 - A¨ ≫oAI
 			return;
+#else
+		if( lpChar && lpChar->m_nVenderType != 1 )	// 2 - A¨ ≫oAI
+			return;
+#endif //__EXTENDED_CURRENCY
 
 		if( pVendor->IsNPC() == FALSE )		// 판매할 대상이 NPC가 아니면?
 			return;
@@ -2989,12 +3015,34 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			nNum = pItemElem->m_nItemNum;
 		
 		// 소지한 칩의 개수가 부족할 때
-		if( pUser->m_Inventory.GetAtItemNum( II_CHP_RED ) < (int)( pItemElem->GetChipCost() * nNum ) )
+		#ifdef __EXTENDED_CURRENCY	
+		if( lpChar && ( lpChar->m_nVenderType == 1 && pUser->m_Inventory.GetAtItemNum( II_CHP_RED ) < (int)( pItemElem->GetChipCost() * nNum ) ) )
 		{
-			// 칩 개수 부족 텍스트 출력
 			pUser->AddDefinedText( TID_GAME_LACKCHIP );
 			return;
 		}
+		if( lpChar->m_nVenderType == 2 && pUser->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) < (int)( pItemElem->GetChipFarmCost() * nNum ) )
+		{
+			pUser->AddDefinedText( TID_GAME_LACKCHIP );
+			return;
+		}
+		if( lpChar->m_nVenderType == 3 && pUser->m_Inventory.GetAtItemNum( II_CHP_BLUE ) < (int)( pItemElem->GetChipLgCost() * nNum ) )
+		{
+			pUser->AddDefinedText( TID_GAME_LACKCHIP );
+			return;
+		}
+		if( lpChar->m_nVenderType == 4 && pUser->m_Inventory.GetAtItemNum( II_CHP_BLACK ) < (int)( pItemElem->GetChipDonateCost() * nNum ) )
+		{
+			pUser->AddDefinedText( TID_GAME_LACKCHIP );
+			return;
+		}
+#else	// __EXTENDED_CURRENCY
+		if( lpChar && lpChar->m_nVenderType == 1 && pUser->m_Inventory.GetAtItemNum( II_CHP_RED ) < (int)( pItemElem->GetChipCost() * nNum ) )
+		{
+			pUser->AddDefinedText( TID_GAME_LACKCHIP );
+			return;
+		}
+#endif // __EXTENDED_CURRENCY
 
 		// 인벤토리가 꽉 찼을 때 
 		if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
@@ -3071,6 +3119,260 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			OnLogItem( aLogItem, &itemElem, nNum );
 		}
 	}
+	#ifdef __EXTENDED_CURRENCY
+		if( lpChar && lpChar->m_nVenderType == 2 )
+		{
+			if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
+			{
+				int nChipNum = pItemElem->GetChipFarmCost() * nNum;
+				ItemProp* pChipItemProp = prj.GetItemProp( II_SYS_SYS_SCR_PERIN );
+
+				if( nChipNum < (int)( pChipItemProp->dwPackMax ) )
+				{
+					CItemElem* pTempElem;
+					int bEmpty = FALSE;
+
+					for( int i = 0; i < pUser->m_Inventory.GetSize(); i++ )
+					{
+						pTempElem = pUser->m_Inventory.GetAtId( i );
+
+						if( IsUsableItem(pTempElem) && pChipItemProp->dwID == pTempElem->m_dwItemId )
+						{
+							if( pTempElem->m_nItemNum <= nChipNum )
+								bEmpty = TRUE;	
+							break;
+						}
+					}
+			
+					if( !bEmpty )
+					{
+						pUser->AddDefinedText( TID_GAME_LACKSPACE, "" );
+						return;
+					}
+				}
+			}
+		
+			DWORD dwChipCost = pItemElem->GetChipFarmCost() * nNum;
+
+			if( dwChipCost > 0x7fff )
+			{
+				for( ; dwChipCost > 0x7fff; )
+				{
+					pUser->RemoveItemA( II_SYS_SYS_SCR_PERIN, 0x7fff );
+					dwChipCost -= 0x7fff;
+				}
+			}
+
+			pUser->RemoveItemA( II_SYS_SYS_SCR_PERIN, (short)dwChipCost );
+
+			CItemElem itemElem;
+			itemElem	= *pItemElem;
+			itemElem.m_nItemNum = nNum;
+			itemElem.SetSerialNumber();
+
+			if( pUser->CreateItem( &itemElem ) )
+			{
+				// ·I±× ³²±e
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_C", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_SYS_SYS_SCR_PERIN ) + itemElem.GetChipFarmCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_SYS_SYS_SCR_PERIN );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipFarmCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}	
+			else
+			{
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_CF", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_SYS_SYS_SCR_PERIN ) + itemElem.GetChipFarmCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_SYS_SYS_SCR_PERIN );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipFarmCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}
+		}
+		
+		if( lpChar && lpChar->m_nVenderType == 3 )
+		{
+			if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
+			{
+				int nChipNum = pItemElem->GetChipLgCost() * nNum;
+				ItemProp* pChipItemProp = prj.GetItemProp( II_CHP_BLUE );
+
+				if( nChipNum < (int)( pChipItemProp->dwPackMax ) )
+				{
+					CItemElem* pTempElem;
+					int bEmpty = FALSE;
+
+					for( int i = 0; i < pUser->m_Inventory.GetSize(); i++ )
+					{
+						pTempElem = pUser->m_Inventory.GetAtId( i );
+
+						if( IsUsableItem(pTempElem) && pChipItemProp->dwID == pTempElem->m_dwItemId )
+						{
+							if( pTempElem->m_nItemNum <= nChipNum )
+								bEmpty = TRUE;	
+							break;
+						}
+					}
+			
+					if( !bEmpty )
+					{
+						pUser->AddDefinedText( TID_GAME_LACKSPACE, "" );
+						return;
+					}
+				}
+			}
+		
+			DWORD dwChipCost = pItemElem->GetChipLgCost() * nNum;
+
+			if( dwChipCost > 0x7fff )
+			{
+				for( ; dwChipCost > 0x7fff; )
+				{
+					pUser->RemoveItemA( II_CHP_BLUE, 0x7fff );
+					dwChipCost -= 0x7fff;
+				}
+			}
+
+			pUser->RemoveItemA( II_CHP_BLUE, (short)dwChipCost );
+
+			CItemElem itemElem;
+			itemElem	= *pItemElem;
+			itemElem.m_nItemNum = nNum;
+			itemElem.SetSerialNumber();
+
+			if( pUser->CreateItem( &itemElem ) )
+			{
+				// ·I±× ³²±e
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_C", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_CHP_BLUE ) + itemElem.GetChipLgCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_CHP_BLUE );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipLgCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}	
+			else
+			{
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_CF", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_CHP_BLUE ) + itemElem.GetChipLgCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_CHP_BLUE );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipLgCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}
+		}
+		
+		if( lpChar && lpChar->m_nVenderType == 4 )
+		{
+			if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
+			{
+				int nChipNum = pItemElem->GetChipDonateCost() * nNum;
+				ItemProp* pChipItemProp = prj.GetItemProp( II_CHP_BLACK );
+
+				if( nChipNum < (int)( pChipItemProp->dwPackMax ) )
+				{
+					CItemElem* pTempElem;
+					int bEmpty = FALSE;
+
+					for( int i = 0; i < pUser->m_Inventory.GetSize(); i++ )
+					{
+						pTempElem = pUser->m_Inventory.GetAtId( i );
+
+						if( IsUsableItem(pTempElem) && pChipItemProp->dwID == pTempElem->m_dwItemId )
+						{
+							if( pTempElem->m_nItemNum <= nChipNum )
+								bEmpty = TRUE;	
+							break;
+						}
+					}
+			
+					if( !bEmpty )
+					{
+						pUser->AddDefinedText( TID_GAME_LACKSPACE, "" );
+						return;
+					}
+				}
+			}
+		
+			DWORD dwChipCost = pItemElem->GetChipDonateCost() * nNum;
+
+			if( dwChipCost > 0x7fff )
+			{
+				for( ; dwChipCost > 0x7fff; )
+				{
+					pUser->RemoveItemA( II_CHP_BLACK, 0x7fff );
+					dwChipCost -= 0x7fff;
+				}
+			}
+
+			pUser->RemoveItemA( II_CHP_BLACK, (short)dwChipCost );
+
+			CItemElem itemElem;
+			itemElem	= *pItemElem;
+			itemElem.m_nItemNum = nNum;
+			itemElem.SetSerialNumber();
+
+			if( pUser->CreateItem( &itemElem ) )
+			{
+				// ·I±× ³²±e
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_C", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_CHP_BLACK ) + itemElem.GetChipDonateCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_CHP_BLACK );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipDonateCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}	
+			else
+			{
+				LogItemInfo aLogItem;
+				aLogItem.Action = "B";
+				aLogItem.SendName = pUser->GetName();
+				CString strTemp;
+				strTemp.Format( "%s_CF", pVendor->GetName() );
+				aLogItem.RecvName = (LPCTSTR)strTemp;
+				aLogItem.WorldId = pUser->GetWorld()->GetID();
+				aLogItem.Gold = pUser->GetItemNum( II_CHP_BLACK ) + itemElem.GetChipDonateCost() * nNum;
+				aLogItem.Gold2 = pUser->GetItemNum( II_CHP_BLACK );
+				aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipDonateCost() * nNum) ) );
+				OnLogItem( aLogItem, &itemElem, nNum );
+			}
+		}
+#endif // __EXTENDED_CURRENCY
+	}
+#ifdef __SYSSECURITY
+}
+catch(...)
+{
+	Error("Error on Line %d in %s",__LINE__,__FILE__);
+}
+#endif
+}
+#endif // __GUILDCOMBATCHIP
 }
 #endif // __GUILDCOMBATCHIP
 
@@ -3537,7 +3839,7 @@ void CDPSrvr::OnPutItemGuildBank( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYT
 		return;
 
 	BYTE nId, mode;
-	DWORD nItemNum;
+	int nItemNum;
 
 	ar >> nId >> nItemNum >> mode;
 
@@ -3626,7 +3928,7 @@ void CDPSrvr::OnGetItemGuildBank( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYT
 		return;
 
 	BYTE nId, mode;
-	DWORD dwItemNum;
+	int dwItemNum; //BankDupeFix
 
 	ar >> nId >> dwItemNum >> mode;
 
@@ -10955,6 +11257,19 @@ void	CDPSrvr::OnMoveItemOnPocket( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYT
 
 		if( nPocket1 == nPocket2 )
 			return;
+		//DUPE CODE
+		if( nNum <= 0 ) {
+			Error( "CDPSrvr::OnMoveItemOnPocket : Dupe Try -> [Player ID: %07d], [Player Name: %s], [Packet used: %d,%d,%d,%d]",
+						pUser->m_idPlayer, pUser->GetName(), nPocket1, nItem, nNum, nPocket2 );
+			return;
+		}
+
+		//CRASH
+		if( nItem < 0 || nPocket2 > 2 || nPocket1 < -1 || nPocket1 > 52 ) {
+			Error( "CDPSrvr::OnMoveItemOnPocket : Crash Try -> [Player ID: %07d], [Player Name: %s], [Packet used: %d,%d,%d,%d]",
+						pUser->m_idPlayer, pUser->GetName(), nPocket1, nItem, nNum, nPocket2 );
+			return;
+		}
 
 		// mirchang 091214 - 착용중인 아이템인지 체크
 		if( nPocket1 == -1 )	// 원본이 인벤토리인지 검사!
