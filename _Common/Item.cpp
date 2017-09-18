@@ -157,6 +157,38 @@ DWORD CItemBase::GetChipCost()
 }
 #endif // __GUILDCOMBATCHIP
 
+#ifdef __EXTENDED_CURRENCY
+DWORD CItemBase::GetChipFarmCost()
+{
+	ItemProp *pProp = GetProp();
+	if( pProp == NULL )		
+		return -1;
+	if( pProp->dwReferValue1 == 0xFFFFFFFF )	
+		return -1;
+
+	return pProp->dwReferValue1;
+}
+DWORD CItemBase::GetChipLgCost()
+{
+	ItemProp *pProp = GetProp();
+	if( pProp == NULL )		
+		return -1;
+	if( pProp->dwReferValue1 == 0xFFFFFFFF )	
+		return -1;
+
+	return pProp->dwReferValue1;
+}DWORD CItemBase::GetChipDonateCost()
+{
+	ItemProp *pProp = GetProp();
+	if( pProp == NULL )		
+		return -1;
+	if( pProp->dwReferValue1 == 0xFFFFFFFF )	
+		return -1;
+
+	return pProp->dwReferValue1;
+}
+#endif
+
 // 퀘스트 아이템인가?
 BOOL CItemBase::IsQuest()
 {

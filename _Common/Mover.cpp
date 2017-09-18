@@ -16,6 +16,10 @@
 extern	CGuildCombat	g_GuildCombatMng;
 #include "..\_aiinterface\aipet.h"
 
+#ifdef __DST_PENYA
+#define DST_PENYA	95
+#endif // __DST_PENYA
+
 #if __VER >= 9	// __PET_0410
 #include "pet.h"
 #endif	// __PET_0410
@@ -7764,11 +7768,11 @@ BOOL CMover::DropItem( CMover* pAttacker )
 #endif // __II_SYS_SYS_SCR_GET
 #ifdef __DST_GIFTBOX
 			nloop += pAttacker->GetAdjParam( DST_GIFTBOX );
-			#ifdef __DST_PENYA 
-            if( pAttacker->GetAdjParam( DST_PENYA ) > 0 ) 
-            { 
-                npenyafaktor *= pAttacker->GetAdjParam( DST_PENYA ); 
-            } 
+#ifdef __DST_PENYA
+            if( pAttacker->GetAdjParam( DST_PENYA ) > 0 )
+            {
+                npenyafaktor *= pAttacker->GetAdjParam( DST_PENYA );
+            }
 #endif // __DST_PENYA  
 #endif // __DST_GIFTBOX
 		D3DXVECTOR3 vPos;		// 드랍될 위치.
@@ -7931,7 +7935,7 @@ BOOL CMover::DropItem( CMover* pAttacker )
 						{
 							int	nSeedID = 0;
 							int nNumGold = lpDropItem->dwNumber + xRandom( lpDropItem->dwNumber2 - lpDropItem->dwNumber );	// Number ~ Number2 사이의 랜덤값.
-							#ifdef __DST_PENYA 
+#ifdef __DST_PENYA 
                             nNumGold    = nNumGold * nPenyaRate / 100 * npenyafaktor; 
 #else // __DST_PENYA 
                             nNumGold    = nNumGold * nPenyaRate / 100; 

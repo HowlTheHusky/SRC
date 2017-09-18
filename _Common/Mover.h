@@ -942,12 +942,6 @@ public:
 	static BOOL		DoEquip( int nSex, int nSkinSet, CItemElem* pItemElem, int nPart, const EQUIP_INFO & rEquipInfo, CItemContainer< CItemElem  >* pInventory, PEQUIP_INFO pEquipeInfo, CModelObject* pModel, BOOL bEquip, CMover *pMover );
 	static	float	GetItemEnduranceInfluence( int nEndurance );	
 	static	int		GetItemEnduranceWeight( int nEndurance );	
-	
-#ifdef __EXTENDED_CURRENCY
-	int						GetChipFarmNum();
-	int						GetChipLgNum();
-	int						GetChipDonateNum();
-#endif // __EXTENDED_CURRENCY
 
 	#ifdef __EXTENDED_CURRENCY
 	int						GetChipFarmNum();

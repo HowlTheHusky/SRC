@@ -5,10 +5,8 @@
 #endif	// __LANG_1013
 
 #if !( defined(__DBSERVER) || defined(__VPW) ) 
-	#include "project.h"
+#include "project.h"
 #endif	// __DBSERVER
-TID_TOOLTIP_PENYA
-DST_PENYA
 
 CString GetLangFileName( int nLang, int nType )
 {

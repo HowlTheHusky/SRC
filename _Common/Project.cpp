@@ -317,7 +317,7 @@ CProject::~CProject()
 			for( i = 0; i < lpCharacter->m_venderItemAry2[ j ].GetSize(); i++)
 				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry2[ j ].GetAt(i) );
 		}
-			#ifdef __EXTENDED_CURRENCY		
+#ifdef __EXTENDED_CURRENCY		
 		for( j = 0; j < MAX_VENDOR_INVENTORY_TAB; j++ )
 		{
 			for( i = 0; i < lpCharacter->m_venderItemAry4[ j ].GetSize(); i++)
@@ -333,6 +333,7 @@ CProject::~CProject()
 			for( i = 0; i < lpCharacter->m_venderItemAry6[ j ].GetSize(); i++)
 				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry6[ j ].GetAt(i) );
 		}
+#endif __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 		safe_delete( lpCharacter );
 	}

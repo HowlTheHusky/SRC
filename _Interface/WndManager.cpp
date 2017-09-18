@@ -30,6 +30,11 @@ extern CGuildCombat g_GuildCombatMng;
 #include "wndbagex.h"
 #endif	// __SYS_POCKET
 
+#ifdef __DST_PENYA
+#define DST_PENYA	95
+#define TID_TOOLTIP_PENYA 1337
+#endif
+
 #if __VER >= 13 // __COUPLE_1117
 #include "couplehelper.h"
 #endif	// __COUPLE_1117

@@ -2619,7 +2619,6 @@ ar >> dwData >> objid >> nPart;
 		return;
 	}
 
-	CUser* pUser = g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) == FALSE )
 		return;
 
@@ -2829,8 +2828,6 @@ void CDPSrvr::OnBuyItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpBuf, 
 						pUser->m_idPlayer, pUser->GetName(), cTab, nId, nNum, dwItemId );
 		return;
 	}
-
-	CUser* pUser	= g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) && pUser->m_vtInfo.GetOther() )
 	{
 		CMover* pVendor = pUser->m_vtInfo.GetOther();
@@ -2978,7 +2975,6 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 		return;
 	}
 
-	CUser* pUser	= g_UserMng.GetUser( dpidCache, dpidUser );
 	if( IsValidObj( pUser ) && pUser->m_vtInfo.GetOther() )
 	{
 		CMover* pVendor = pUser->m_vtInfo.GetOther();
@@ -3120,7 +3116,7 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 		}
 	}
 	#ifdef __EXTENDED_CURRENCY
-		if( lpChar && lpChar->m_nVenderType == 2 )
+	if( lpChar && lpChar->m_nVenderType == 2 )
 		{
 			if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
 			{
@@ -3371,9 +3367,6 @@ catch(...)
 	Error("Error on Line %d in %s",__LINE__,__FILE__);
 }
 #endif
-}
-#endif // __GUILDCOMBATCHIP
-}
 #endif // __GUILDCOMBATCHIP
 
 //NPC에게 파는 경우
