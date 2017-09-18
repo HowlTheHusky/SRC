@@ -943,6 +943,12 @@ public:
 	static	float	GetItemEnduranceInfluence( int nEndurance );	
 	static	int		GetItemEnduranceWeight( int nEndurance );	
 
+	#ifdef __EXTENDED_CURRENCY
+	int						GetChipFarmNum();
+	int						GetChipLgNum();
+	int						GetChipDonateNum();
+	#endif // __EXTENDED_CURRENCY
+	
 	virtual	BOOL	SetIndex( LPDIRECT3DDEVICE9 pd3dDevice, DWORD dwIndex, BOOL bInitProp = FALSE, BOOL bDestParam = TRUE );
 	virtual BOOL	Read( CFileIO* pFile );
 	virtual void	Process();
