@@ -854,11 +854,17 @@ void CDialogMsg::AddMessage( CObj* pObj, LPCTSTR lpszMessage, DWORD RGB, int nKi
 		}		
 		else
 		if( scanner.Token == "!" )
-		{
-			int nEmoticonIdx = scanner.GetNumber();
-			AddEmoticon( pObj, nEmoticonIdx );
-			return;
-		}
+        {
+            int nEmoticonIdx = scanner.GetNumber();
+
+            if( nEmoticonIdx > MAX_EMOTICON_NUM )
+                nEmoticonIdx = MAX_EMOTICON_NUM;
+            else if( nEmoticonIdx < 0 )
+                nEmoticonIdx = 0;
+
+            AddEmoticon( pObj, nEmoticonIdx );
+            return;
+        }
 		
 		for( int i = 0; i < m_textArray.GetSize(); i++ )
 		{

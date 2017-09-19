@@ -1708,6 +1708,25 @@ BOOL CMover::SetFxp( int nFxp, int nFlightLv )
 
 BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 {
+#ifdef __QUICKJOBCHANGE
+	m_nExp1		= nExp1;
+
+	if( IsInvalidObj(this) )
+		return 0;
+		
+#ifdef __CLIENT
+	if( (GetLevel() == 120) && GetExpPercent() == 9999 )
+	{
+		SAFE_DELETE( g_WndMng.m_pJobChangeEx );
+		g_WndMng.m_pJobChangeEx = new CWndJobChangeEx;
+		g_WndMng.m_pJobChangeEx->Initialize();
+	}
+#endif
+
+	if( nLevel > m_nLevel )
+	{
+#else // __QUICKJOBCHANGE
+
 	m_nExp1		= nExp1;
 
 	if( IsInvalidObj(this) )
@@ -1715,6 +1734,7 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 
 	if( nLevel > m_nLevel )
 	{
+#endif //__QUICKJOBCHANGE
 #ifdef __CLIENT
  		// 15렙 되면 더이상 초보자가 아니므로 자동으로 초보자도움말 끄자.
 		if( nLevel == 15 )		// 1차전직레벨 15에 대한 define 있으면 그걸로 바꿔주. -xuzhu-
@@ -1789,6 +1809,14 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 				if( GetLevel() != 1 )
 					pWndWorld->m_pWndGuideSystem->GuideStart(FALSE);
 			#endif
+				#ifdef __QUICKJOBCHANGE
+				if( GetLevel() == 15 || GetLevel() == 60 )
+				{
+				SAFE_DELETE( g_WndMng.m_pJobChangeEx );
+				g_WndMng.m_pJobChangeEx = new CWndJobChangeEx;
+				g_WndMng.m_pJobChangeEx->Initialize();
+}
+#endif //__QUICKJOBCHANGE
 				switch(GetLevel())
 				{
 			#if __VER >= 12 // __MOD_TUTORIAL

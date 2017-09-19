@@ -19244,7 +19244,14 @@ void CDPClient::SendGuildHouseTenderJoin( OBJID objGHId, int nTenderPerin, int n
 	SEND( ar, this, DPID_SERVERPLAYER );
 }
 #endif // __GUILD_HOUSE_MIDDLE
-
+#ifdef __QUICKJOBCHANGE
+void CDPClient::UpdateJob( int nJob, int nLevel )
+{
+	BEFORESENDSOLE( ar, PACKETTYPE_UPDATE_JOB, DPID_UNKNOWN );
+	ar << nJob << nLevel;
+	SEND( ar, this, DPID_SERVERPLAYER );
+}
+#endif //__QUICKJOBCHANGE
 #ifdef __APP_TELEPORTER
 void CDPClient::SendTeleport( int nCurSel )
 {

@@ -551,7 +551,9 @@ CDPSrvr::CDPSrvr()
 	ON_MSG( PACKETTYPE_GUILDHOUSE_TENDER_INFOWND, OnGuildHouseTenderInfoWnd );
 	ON_MSG( PACKETTYPE_GUILDHOUSE_TENDER_JOIN, OnGuildHouseTenderJoin );
 #endif // __GUILD_HOUSE_MIDDLE
-
+#ifdef __QUICKJOBCHANGE
+	ON_MSG( PACKETTYPE_UPDATE_JOB, OnUpdateJob );
+#endif // __QUICKJOBCHANGE
 
 }
 
@@ -12055,7 +12057,7 @@ BOOL CDPSrvr::DoUseItemTarget_InitializeRandomOption(
 		//	mulcom	END100405	각성 보호의 두루마리
 
 		pUser->UpdateItemEx( (BYTE)( pTarget->m_dwObjId ), UI_RANDOMOPTITEMID, pTarget->GetRandomOptItemId() );
-		pUser->AddDiagText( prj.GetText( nOk ) );
+		pUser->AddText("Awakening removed");
 		// log
 		LogItemInfo	log;
 		log.Action	= szOperation;
@@ -12681,6 +12683,38 @@ void CDPSrvr::OnGuildHouseTenderJoin( CAr & ar, DPID dpidCache, DPID dpidUser, L
 	}
 }
 #endif // __GUILD_HOUSE_MIDDLE
+
+#ifdef __QUICKJOBCHANGE
+void CDPSrvr::OnUpdateJob( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE, u_long )
+{
+    try
+    {
+        CUser* pUser = g_UserMng.GetUser( dpidCache, dpidUser );
+        
+        if( IsValidObj( pUser ) == TRUE )
+        {
+			int nJob, nLevel;
+            ar >> nJob >> nLevel;
+			if( pUser->m_nJob >= nJob )
+				return;
+			if( nJob < MAX_EXPERT && pUser->m_nLevel != 15 )
+				return;
+			else if( nJob >= MAX_EXPERT && nJob < MAX_PROFESSIONAL && pUser->m_nLevel != 60 )
+				return;
+			else if( nJob >= MAX_PROFESSIONAL && nJob < MAX_HERO && pUser->m_nLevel != 120 && pUser->GetExpPercent() != 9999 ) 
+				return;
+			else if( nJob >= MAX_HERO && pUser->m_nLevel != 129 && pUser->GetExpPercent() != 9999 )
+				return;
+
+			pUser->InitLevelPumbaaa( nJob, nLevel, TRUE );
+		}
+    }
+    catch(...)
+    {
+        Error("Exception caught in File %s on line %d", __FILE__, __LINE__);
+    }
+}
+#endif //__QUICKJOBCHANGE
 
 #ifdef __APP_TELEPORTER
 void CDPSrvr::OnTeleportByAPP( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE, u_long )

@@ -2820,7 +2820,7 @@ void CWndWorld::RenderSelectObj( C2DRender* p2DRender, CObj* pObj )
 #endif //__CSC_VER11_1
 #else*/
 						// 타겟이 자신보다 10레벨 이하면 레벨을 볼수 있음.
-						if( g_pPlayer->IsAuthHigher( AUTH_GAMEMASTER ) == TRUE || g_pPlayer->GetLevel() + 20 > pMover->GetLevel() )
+						if( g_pPlayer->IsAuthHigher( AUTH_GENERAL ) == TRUE || g_pPlayer->GetLevel() + 20 > pMover->GetLevel() )
 							if( pMover->IsHero() )
 								sprintf( szText, "%s <Lvl %d-H>", pMover->GetName(), pMover->GetLevel() );
 							else if( pMover->IsMaster() )

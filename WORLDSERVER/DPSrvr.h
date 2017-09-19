@@ -475,6 +475,9 @@ private:
 	void	OnGuildHouseTenderInfoWnd( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE, u_long );
 	void	OnGuildHouseTenderJoin( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE, u_long );
 #endif // __GUILD_HOUSE_MIDDLE
+#ifdef __QUICKJOBCHANGE
+void	OnUpdateJob( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE, u_long );
+#endif //__QUICKJOBCHANGE
 private:
 	DPID	m_dpidCache;		// 캐쉬서버 DPID
 };

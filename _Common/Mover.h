@@ -960,6 +960,9 @@ public:
 
 	void			Init();										// ∞¥√º √ ±‚»≠ 
 	void			InitLevel( int nJob, LONG nLevel, BOOL bGamma = TRUE );			// ∞¥√º∏¶ nLevel∑Œ πŸ≤„¡‹
+	#ifdef __QUICKJOBCHANGE
+	void			InitLevelPumbaaa( int nJob, LONG nLevel, BOOL bGamma = TRUE ) ;
+	#endif //__QUICKJOBCHANGE
 	void			ProcessAniSpeed();
 	void			AllocShopInventory( LPCHARACTER pCharacter );
 	BOOL			IsVendorNPC();

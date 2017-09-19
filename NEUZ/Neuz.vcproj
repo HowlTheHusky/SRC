@@ -498,6 +498,12 @@
 				RelativePath="WebCtrl.h">
 			</File>
 			<File
+				RelativePath="..\_Interface\WndChangeJobEx.cpp">
+			</File>
+			<File
+				RelativePath="..\_Interface\WndChangeJobEx.h">
+			</File>
+			<File
 				RelativePath="..\_Interface\WndQuizEvent.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

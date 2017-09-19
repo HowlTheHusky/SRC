@@ -854,7 +854,9 @@
 
 #define PACKETTYPE_QUERYMAILBOX_REQ					(DWORD)0x88100240
 #define PACKETTYPE_QUERYMAILBOX_COUNT				(DWORD)0x88100241
-
+#ifdef __QUICKJOBCHANGE
+#define PACKETTYPE_UPDATE_JOB						(DWORD)0x88100242
+#endif //__QUICKJOBCHANGE
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 

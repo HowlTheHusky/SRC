@@ -9,6 +9,7 @@
 //#define __MONSTER_NOTICE
 #define __DST_PENYA
 #define __EXTENDED_CURRENCY
+#define __QUICKJOBCHANGE 
 #if !defined( __TESTSERVER ) && !defined( __MAINSERVER )
 	#define __INTERNALSERVER
 #endif

@@ -20,7 +20,7 @@
 #include "Chatting.h"
 #include "webbox.h"
 #include "network.h"
-#include "NPGameLib4.h"
+//#include "NPGameLib4.h"
 #include "defineSound.h"
 #include "ClientMsg.h"
 
@@ -44,8 +44,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // functions declare
 //////////////////////////////////////////////////////////////////////////////
-extern void PreInitNProtect();
-extern CNPGameLib* GetNProtect();
+//extern void PreInitNProtect();
+//extern CNPGameLib* GetNProtect();
 void __cdecl LoadProperty( void*  );
 //////////////////////////////////////////////////////////////////////////////
 // global variable
@@ -311,83 +311,83 @@ HRESULT CNeuzApp::OneTimeSceneInit()
 	return S_OK;
 }  
 
-void CNeuzApp::InitNProtect()
-{
-	CScript s1;
-	if( s1.Load(MakePath( DIR_CLIENT, "GameGuard.txt.txt" ) ) )
-		s1.LoadString();
-	
-	CScript s2;
-	if( s2.Load(MakePath( DIR_CLIENT, "GameGuard.inc" ) ) )
-	{
-		s2.GetToken();
-		while( s2.tok != FINISHED )
-		{
-			m_strArray.Add( s2.Token );
-			s2.GetToken();
-		}
-	}
-
-	PreInitNProtect();
-	DWORD dwResult = GetNProtect()->Init();
-	if( dwResult != NPGAMEMON_SUCCESS )
-    {
-		TCHAR msg[256];
-		LPCSTR lpszMsg;
-		
-		switch (dwResult)
-		{
-		case NPGAMEMON_ERROR_EXIST:
-			lpszMsg	= m_strArray.GetAt(0);//"게임가드가 이미 실행 중 입니다. 재부팅 후 다시 실행해보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_GAME_EXIST:
-			lpszMsg	= m_strArray.GetAt(1);//"게임이 중복 실행되었거나 게임가드가 이미 실행 중 입니다. 게임 종료 후 다시 실행해보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_INIT:
-			lpszMsg	= m_strArray.GetAt(2);//"게임가드 초기화 에러입니다. 재부팅 후 다시 실행해보거나 충돌할 수 있는 다른 프로그램들을 종료한 후 실행해 보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_AUTH_GAMEGUARD:
-		case NPGAMEMON_ERROR_NFOUND_GG:
-		case NPGAMEMON_ERROR_AUTH_INI:
-		case NPGAMEMON_ERROR_NFOUND_INI:
-			lpszMsg	= m_strArray.GetAt(3);//"게임가드 파일이 없거나 변조되었습니다. 게임가드 셋업 파일을 설치해보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_CRYPTOAPI:
-			lpszMsg	= m_strArray.GetAt(4);//"윈도우의 일부 시스템 파일이 손상되었습니다. 인터넷 익스플로러(IE)를 다시 설치해보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_EXECUTE:
-			lpszMsg	= m_strArray.GetAt(5);//"게임가드 실행에 실패했습니다. 게임가드 셋업 파일을 다시 설치해보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_ILLEGAL_PRG:
-			lpszMsg	= m_strArray.GetAt(6);//"불법 프로그램이 발견되었습니다. 불필요한 프로그램을 종료한 후 다시 실행해보시기 바랍니다.";
-			break;
-		case NPGMUP_ERROR_ABORT:
-			lpszMsg	= m_strArray.GetAt(7);//"게임가드 업데이트를 취소하셨습니다. 접속이 계속 되지 않을 경우 인터넷 및 방화벽 상태를 점검해보시기 바랍니다.";
-			break;
-		case NPGMUP_ERROR_CONNECT:
-		case NPGMUP_ERROR_DOWNCFG:
-			lpszMsg	= m_strArray.GetAt(8);//"게임가드 업데이트 서버 접속에 실패하였습니다. 잠시 후 재시도 해보거나, 인터넷 및 방화벽 상태를 점검해 보시기 바랍니다.";
-			break;
-		case NPGMUP_ERROR_AUTH:
-			lpszMsg	= m_strArray.GetAt(9);//"게임가드 업데이트를 완료하지 못 했습니다. 바이러스 검사를 해보시거나, PC 관리 프로그램을 사용하시면 설정을 조정한 후 게임을 실행해 보시기 바랍니다.";
-			break;
-		case NPGAMEMON_ERROR_NPSCAN:
-		default:
-			// 적절한 종료 메시지 출력, UI 초기화 후라면 MessageBox 대신 게임 UI를 사용해도 됨
-			//wsprintf( msg, "게임가드 실행 에러 : %lu", dwResult );
-			wsprintf( msg, m_strArray.GetAt(10), dwResult );
-			lpszMsg = msg;
-			break;
-		}
-		if( lpszMsg )
-			::Error( "nProtect GameGuard : %s", lpszMsg );
-//			MessageBox( GetSafeHwnd(), lpszMsg, "nProtect GameGuard", MB_OK );
-
-		ExitProcess( -1 );
-	}
-
-	GetNProtect()->SetHwnd( GetSafeHwnd() );
-}
+//void CNeuzApp::InitNProtect()
+//{
+//	CScript s1;
+//	if( s1.Load(MakePath( DIR_CLIENT, "GameGuard.txt.txt" ) ) )
+//		s1.LoadString();
+//	
+//	CScript s2;
+//	if( s2.Load(MakePath( DIR_CLIENT, "GameGuard.inc" ) ) )
+//	{
+//		s2.GetToken();
+//		while( s2.tok != FINISHED )
+//		{
+//			m_strArray.Add( s2.Token );
+//			s2.GetToken();
+//		}
+//	}
+//
+//	PreInitNProtect();
+//	DWORD dwResult = GetNProtect()->Init();
+//	if( dwResult != NPGAMEMON_SUCCESS )
+//    {
+//		TCHAR msg[256];
+//		LPCSTR lpszMsg;
+//		
+//		switch (dwResult)
+//		{
+//		case NPGAMEMON_ERROR_EXIST:
+//			lpszMsg	= m_strArray.GetAt(0);//"게임가드가 이미 실행 중 입니다. 재부팅 후 다시 실행해보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_GAME_EXIST:
+//			lpszMsg	= m_strArray.GetAt(1);//"게임이 중복 실행되었거나 게임가드가 이미 실행 중 입니다. 게임 종료 후 다시 실행해보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_INIT:
+//			lpszMsg	= m_strArray.GetAt(2);//"게임가드 초기화 에러입니다. 재부팅 후 다시 실행해보거나 충돌할 수 있는 다른 프로그램들을 종료한 후 실행해 보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_AUTH_GAMEGUARD:
+//		case NPGAMEMON_ERROR_NFOUND_GG:
+//		case NPGAMEMON_ERROR_AUTH_INI:
+//		case NPGAMEMON_ERROR_NFOUND_INI:
+//			lpszMsg	= m_strArray.GetAt(3);//"게임가드 파일이 없거나 변조되었습니다. 게임가드 셋업 파일을 설치해보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_CRYPTOAPI:
+//			lpszMsg	= m_strArray.GetAt(4);//"윈도우의 일부 시스템 파일이 손상되었습니다. 인터넷 익스플로러(IE)를 다시 설치해보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_EXECUTE:
+//			lpszMsg	= m_strArray.GetAt(5);//"게임가드 실행에 실패했습니다. 게임가드 셋업 파일을 다시 설치해보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_ILLEGAL_PRG:
+//			lpszMsg	= m_strArray.GetAt(6);//"불법 프로그램이 발견되었습니다. 불필요한 프로그램을 종료한 후 다시 실행해보시기 바랍니다.";
+//			break;
+//		case NPGMUP_ERROR_ABORT:
+//			lpszMsg	= m_strArray.GetAt(7);//"게임가드 업데이트를 취소하셨습니다. 접속이 계속 되지 않을 경우 인터넷 및 방화벽 상태를 점검해보시기 바랍니다.";
+//			break;
+//		case NPGMUP_ERROR_CONNECT:
+//		case NPGMUP_ERROR_DOWNCFG:
+//			lpszMsg	= m_strArray.GetAt(8);//"게임가드 업데이트 서버 접속에 실패하였습니다. 잠시 후 재시도 해보거나, 인터넷 및 방화벽 상태를 점검해 보시기 바랍니다.";
+//			break;
+//		case NPGMUP_ERROR_AUTH:
+//			lpszMsg	= m_strArray.GetAt(9);//"게임가드 업데이트를 완료하지 못 했습니다. 바이러스 검사를 해보시거나, PC 관리 프로그램을 사용하시면 설정을 조정한 후 게임을 실행해 보시기 바랍니다.";
+//			break;
+//		case NPGAMEMON_ERROR_NPSCAN:
+//		default:
+//			// 적절한 종료 메시지 출력, UI 초기화 후라면 MessageBox 대신 게임 UI를 사용해도 됨
+//			//wsprintf( msg, "게임가드 실행 에러 : %lu", dwResult );
+//			wsprintf( msg, m_strArray.GetAt(10), dwResult );
+//			lpszMsg = msg;
+//			break;
+//		}
+//		if( lpszMsg )
+//			::Error( "nProtect GameGuard : %s", lpszMsg );
+////			MessageBox( GetSafeHwnd(), lpszMsg, "nProtect GameGuard", MB_OK );
+//
+//		ExitProcess( -1 );
+//	}
+//
+//	GetNProtect()->SetHwnd( GetSafeHwnd() );
+//}
 
 
 ///////////////////////////////////////////////////////
@@ -1228,70 +1228,70 @@ NEXT:
 	}
 	return S_OK;
 }
-
-BOOL CALLBACK NPGameMonCallback( DWORD dwMsg, DWORD dwArg )
-{
-	if( g_Neuz.m_strArray.GetSize() == 0 )
-		return false;
-
-	bool bAppExit	= false;
-
-	TCHAR msg[128];
-	LPCTSTR lpszMsg	= NULL;
-
-	switch (dwMsg) 
-	{
-		case NPGAMEMON_CHECK_CSAUTH2:	// 서버로 인증 패킷을 전송
-			{
-				GG_AUTH_DATA AuthData;
-				memcpy( &AuthData, (PVOID)dwArg, sizeof(GG_AUTH_DATA) );
-				
-				BEFORESENDSOLE( ar, PACKETTYPE_AUTHQUERY, DPID_UNKNOWN );
-				ar.Write( (void*)&AuthData, sizeof(GG_AUTH_DATA) );
-				SEND( ar, &g_dpLoginClient, DPID_SERVERPLAYER );
-
-				if( g_Neuz.m_loginSI.nCount == 1 )
-				{
-					++g_Neuz.m_loginSI.nCount;
-					g_dpLoginClient.SendGetPlayerList( g_Neuz.m_loginSI.dwID, g_Neuz.m_loginSI.pszAccount, g_Neuz.m_loginSI.pszPassword );
-				}
-				return true;
-			}
-		case NPGAMEMON_COMM_ERROR:
-		case NPGAMEMON_COMM_CLOSE:
-			bAppExit = true;
-			return false;
-		case NPGAMEMON_INIT_ERROR:		// "게임가드 초기화 에러
-			bAppExit = true;
-			wsprintf( msg, g_Neuz.m_strArray.GetAt(17), dwArg );
-			lpszMsg	= msg;
-			break;
-		case NPGAMEMON_SPEEDHACK:		// "스피드핵이 감지되었습니다."
-			bAppExit = true;
-			lpszMsg	= g_Neuz.m_strArray.GetAt(18);
-			break;
-		case NPGAMEMON_GAMEHACK_KILLED:	// "게임핵이 발견되었습니다."
-		case NPGAMEMON_GAMEHACK_DETECT:	// "게임핵이 발견되었습니다."
-			bAppExit = true;
-			lpszMsg	= g_Neuz.m_strArray.GetAt(19);
-			break;
-		case NPGAMEMON_GAMEHACK_DOUBT:	//"게임이나 게임가드가 변조되었습니다.";	
-			bAppExit = true;
-			lpszMsg = g_Neuz.m_strArray.GetAt(20);
-			break;
-	}
-
-	if( lpszMsg )
-		MessageBox( g_Neuz.GetSafeHwnd(), lpszMsg, "nProtect GameGuard", MB_OK );
-
-	if( bAppExit )
-	{
-		ExitProcess( -1 );
-		return false;
-	}
-
-    return true;
-}
+//
+//BOOL CALLBACK NPGameMonCallback( DWORD dwMsg, DWORD dwArg )
+//{
+//	if( g_Neuz.m_strArray.GetSize() == 0 )
+//		return false;
+//
+//	bool bAppExit	= false;
+//
+//	TCHAR msg[128];
+//	LPCTSTR lpszMsg	= NULL;
+//
+//	switch (dwMsg) 
+//	{
+//		case NPGAMEMON_CHECK_CSAUTH2:	// 서버로 인증 패킷을 전송
+//			{
+//				GG_AUTH_DATA AuthData;
+//				memcpy( &AuthData, (PVOID)dwArg, sizeof(GG_AUTH_DATA) );
+//				
+//				BEFORESENDSOLE( ar, PACKETTYPE_AUTHQUERY, DPID_UNKNOWN );
+//				ar.Write( (void*)&AuthData, sizeof(GG_AUTH_DATA) );
+//				SEND( ar, &g_dpLoginClient, DPID_SERVERPLAYER );
+//
+//				if( g_Neuz.m_loginSI.nCount == 1 )
+//				{
+//					++g_Neuz.m_loginSI.nCount;
+//					g_dpLoginClient.SendGetPlayerList( g_Neuz.m_loginSI.dwID, g_Neuz.m_loginSI.pszAccount, g_Neuz.m_loginSI.pszPassword );
+//				}
+//				return true;
+//			}
+//		case NPGAMEMON_COMM_ERROR:
+//		case NPGAMEMON_COMM_CLOSE:
+//			bAppExit = true;
+//			return false;
+//		case NPGAMEMON_INIT_ERROR:		// "게임가드 초기화 에러
+//			bAppExit = true;
+//			wsprintf( msg, g_Neuz.m_strArray.GetAt(17), dwArg );
+//			lpszMsg	= msg;
+//			break;
+//		case NPGAMEMON_SPEEDHACK:		// "스피드핵이 감지되었습니다."
+//			bAppExit = true;
+//			lpszMsg	= g_Neuz.m_strArray.GetAt(18);
+//			break;
+//		case NPGAMEMON_GAMEHACK_KILLED:	// "게임핵이 발견되었습니다."
+//		case NPGAMEMON_GAMEHACK_DETECT:	// "게임핵이 발견되었습니다."
+//			bAppExit = true;
+//			lpszMsg	= g_Neuz.m_strArray.GetAt(19);
+//			break;
+//		case NPGAMEMON_GAMEHACK_DOUBT:	//"게임이나 게임가드가 변조되었습니다.";	
+//			bAppExit = true;
+//			lpszMsg = g_Neuz.m_strArray.GetAt(20);
+//			break;
+//	}
+//
+//	if( lpszMsg )
+//		MessageBox( g_Neuz.GetSafeHwnd(), lpszMsg, "nProtect GameGuard", MB_OK );
+//
+//	if( bAppExit )
+//	{
+//		ExitProcess( -1 );
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 
 void CNeuzApp::HashMD5( char* szResult, LPCTSTR szPWD )
@@ -1791,7 +1791,7 @@ void CNeuzApp::BeginLoadThread()
 //
 HRESULT CNeuzApp::InitDeviceObjects()
 {
-	InitNProtect();
+	//InitNProtect();
 	BeginLoadThread();
 
 	SetMouseCursor( CUR_DELAY ); 

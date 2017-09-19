@@ -88,6 +88,9 @@
 #ifdef __GUILD_HOUSE_MIDDLE
 #include "WndHousing.h"
 #endif //__GUILD_HOUSE_MIDDLE
+#ifdef __QUICKJOBCHANGE
+#include "WndChangeJobEx.h"
+#endif //__QUICKJOBCHANGE
 typedef CMap<DWORD, DWORD, void *, void *> CMapDWordToPtr;
 
 
@@ -357,6 +360,9 @@ public:
 	CWndExtraction* m_pWndExtraction;
 	CWndChangeWeapon* m_pWndChangeWeapon;
 	CWndPetStatus* m_pWndPetStatus;
+	#ifdef __QUICKJOBCHANGE
+	CWndJobChangeEx* m_pJobChangeEx;
+	#endif //__QUICKJOBCHANGE
 
 	CWndFoodConfirm* m_pWndFoodConfirm;
 	CWndPetMiracle* m_pWndPetMiracle;
