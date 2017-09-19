@@ -7,7 +7,6 @@
 #define	__APP_TELEPORTER 
 #define __AUTO_SKILL_MAX
 //#define __MONSTER_NOTICE
-#define __PERIN_TO_INVENTORY
 #define __QUICKJOBCHANGE 
 #if !defined( __TESTSERVER ) && !defined( __MAINSERVER )
 	#define __INTERNALSERVER
