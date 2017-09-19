@@ -8,3 +8,5 @@ __all/all.ncb
 *.vcproj
 *.suo
 *.ncb
+NEUZ/Neuz.vcproj
+*.vcproj
