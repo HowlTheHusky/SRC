@@ -59,11 +59,6 @@ public:
 #if __VER >= 11 // __GUILDCOMBATCHIP
 	DWORD			GetChipCost();
 #endif // __GUILDCOMBATCHIP
-#ifdef __EXTENDED_CURRENCY
-	DWORD			GetChipLgCost();
-	DWORD			GetChipFarmCost();
-	DWORD			GetChipDonateCost();
-#endif // __EXTENDED_CURRENCY
 
 	void	SetSerialNumber( void );
 	SERIALNUMBER	GetSerialNumber( void )		{	return m_liSerialNumber;	}
@@ -74,7 +69,6 @@ inline void CItemBase::SetExtra( int nExtra )
 {
 	m_nExtra = nExtra;
 }
-
 inline int CItemBase::GetExtra()
 {
 	return m_nExtra;

@@ -7,8 +7,7 @@
 #define	__APP_TELEPORTER 
 #define __AUTO_SKILL_MAX
 //#define __MONSTER_NOTICE
-#define __DST_PENYA
-#define __EXTENDED_CURRENCY
+#define __PERIN_TO_INVENTORY
 #define __QUICKJOBCHANGE 
 
 #if !defined( __TESTSERVER ) && !defined( __MAINSERVER )

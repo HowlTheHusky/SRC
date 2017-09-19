@@ -375,14 +375,6 @@ public:
 	int m_nDEF;
 	int m_nCritical;
 	int m_nATKSpeed;
-	int m_nSpeedDepla;
-	int m_nCriticalRate;
-	int m_nSpellCastSpeed;
-	int m_nReflectDamage;
-	int m_nHitRate;
-	int m_nBlockmelee;
-	int m_nBlockRange;
-	int m_nEsquiveRate;
 	
 public:
 	CWndCharacterDetail2();
@@ -492,14 +484,6 @@ public:
 	int m_nDEF;
 	int m_nCritical;
 	int m_nATKSpeed;
-	int m_nSpeedDepla;
-	int m_nCriticalRate;
-	int m_nSpellCastSpeed;
-	int m_nReflectDamage;
-	int m_nHitRate;
-	int m_nBlockmelee;
-	int m_nBlockRange;
-	int m_nEsquiveRate;
 public:
 
 	CWndCharInfo();
@@ -520,14 +504,6 @@ public:
 	int GetVirtualDEF();
 	int GetVirtualCritical();
 	float GetVirtualATKSpeed();
-	int GetVirtualSpeedDepla();
-	int GetVirtualCriticalRate();
-	int GetVirtualSpellCastSpeed();
-	int GetVirtualReflectDamage();
-	int GetVirtualHitRate();
-	int GetVirtualBlockmelee();
-	int GetVirtualBlockRange();
-	int GetVirtualEsquiveRate();
 
 protected:
 	void RenderATK( C2DRender* p2DRender, int x, int y );

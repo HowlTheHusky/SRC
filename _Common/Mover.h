@@ -122,12 +122,6 @@ const DWORD NEXT_TICK_RECOVERYSTAND = SEC(3);
 
 #endif	//__LEGEND	//	9차 전승시스템	Neuz, World, Trans
 
-#ifdef __EXTENDED_CURRENCY
-	int						GetChipFarmNum();
-	int						GetChipLgNum();
-	int						GetChipDonateNum();
-#endif // __EXTENDED_CURRENCY
-
 /// Replace함수에서 사용하는 타입 	
 enum REPLACE_TYPE
 {
