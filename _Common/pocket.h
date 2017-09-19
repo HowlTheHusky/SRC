@@ -30,7 +30,7 @@ private:
 
 #define	MAX_POCKET	3
 #define	POCKET_SLOT_SIZE_0	6
-#define	POCKET_SLOT_SIZE_1_2	24
+#define	POCKET_SLOT_SIZE_1_2	72
 
 typedef	struct	_PocketController_Result
 {
