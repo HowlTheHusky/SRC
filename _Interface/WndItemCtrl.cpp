@@ -347,7 +347,7 @@ void CWndItemCtrl::RanderIcon( C2DRender* p2DRender, CItemElem* pItemElem, int x
 					bRander = 1;
 			}
 
-#endif // __EXTENDED_CURRENCY
+		#endif // __EXTENDED_CURRENCY
 		}
 		else
 		{

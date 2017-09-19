@@ -472,10 +472,6 @@ BOOL  CMover::SetExpert( int nJob )
 		ItemProp* pSkillProp = apSkillProp[ i ];
 		lpSkill = &m_aJobSkill[ nNum++ ];
 		lpSkill->dwSkill = pSkillProp->dwID;
-		#ifdef	__AUTO_SKILL_MAX
-		lpSkill->dwLevel = pSkillProp->dwExpertMax;
-		#endif	//__AUTO_SKILL_MAX
-		
 	}
 	return TRUE;
 }
@@ -1627,9 +1623,6 @@ BOOL CMover::AddChangeJob( int nJob )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i + MAX_JOB_SKILL ];
 			lpSkill->dwSkill = pSkillProp->dwID;
-			#ifdef	__AUTO_SKILL_MAX
-			lpSkill->dwLevel = pSkillProp->dwExpertMax;
-			#endif	//__AUTO_SKILL_MAX
 		}
 		bResult = TRUE;
 	}
@@ -1644,9 +1637,6 @@ BOOL CMover::AddChangeJob( int nJob )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i + MAX_JOB_SKILL + MAX_EXPERT_SKILL ];
 			lpSkill->dwSkill = pSkillProp->dwID;
-			#ifdef	__AUTO_SKILL_MAX
-			lpSkill->dwLevel = pSkillProp->dwExpertMax;
-			#endif	//__AUTO_SKILL_MAX
 		}
 		bResult = TRUE;
 	}
@@ -1662,9 +1652,6 @@ BOOL CMover::AddChangeJob( int nJob )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i + MAX_JOB_SKILL + MAX_EXPERT_SKILL + MAX_PRO_SKILL];
 			lpSkill->dwSkill = pSkillProp->dwID;
-			#ifdef	__AUTO_SKILL_MAX
-			lpSkill->dwLevel = pSkillProp->dwExpertMax;
-			#endif	//__AUTO_SKILL_MAX
 			lpSkill->dwLevel = 1;	//master스킬은 1부터 준다.
 		}
 		bResult = TRUE;
@@ -1681,9 +1668,6 @@ BOOL CMover::AddChangeJob( int nJob )
 			ItemProp* pSkillProp = apSkillProp[ i ];
 			lpSkill = &m_aJobSkill[ i + MAX_JOB_SKILL + MAX_EXPERT_SKILL + MAX_PRO_SKILL + MAX_MASTER_SKILL ];
 			lpSkill->dwSkill = pSkillProp->dwID;
-			#ifdef	__AUTO_SKILL_MAX
-			lpSkill->dwLevel = pSkillProp->dwExpertMax;
-			#endif	//__AUTO_SKILL_MAX
 		}
 		bResult = TRUE;
 	}

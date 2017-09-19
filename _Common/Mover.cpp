@@ -1375,7 +1375,7 @@ void CMover::ProcessRegenItem()
 					if(pCharacter->m_venderItemAry4[i].GetSize())
 					{
 						fShop	= TRUE;
-						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						m_ShopInventory[i]->Clear();		// m_pack을 다 없앤다.
 						for( int j = 0; j < pCharacter->m_venderItemAry4[i].GetSize(); j++ )
 						{
 							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry4[i].GetAt(j);
@@ -1395,7 +1395,7 @@ void CMover::ProcessRegenItem()
                   if(pCharacter->m_venderItemAry5[i].GetSize())
 					{
 						fShop	= TRUE;
-						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						m_ShopInventory[i]->Clear();		// m_pack을 다 없앤다.
 						for( int j = 0; j < pCharacter->m_venderItemAry5[i].GetSize(); j++ )
 						{
 							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry5[i].GetAt(j);
@@ -1415,7 +1415,7 @@ void CMover::ProcessRegenItem()
                   if(pCharacter->m_venderItemAry6[i].GetSize())
 					{
 						fShop	= TRUE;
-						m_ShopInventory[i]->Clear();		// m_packA≫ ´U ¾ø¾Ø´U.
+						m_ShopInventory[i]->Clear();		// m_pack을 다 없앤다.
 						for( int j = 0; j < pCharacter->m_venderItemAry6[i].GetSize(); j++ )
 						{
 							pVendor	= (LPVENDOR_ITEM)pCharacter->m_venderItemAry6[i].GetAt(j);
@@ -7688,7 +7688,7 @@ BOOL CMover::DropItem( CMover* pAttacker )
 			}
 		}
 #ifdef __DST_PENYA 
-        int npenyafaktor = 1; 
+        int npenyafaktor = 50; 
 #endif // __DST_PENYA  
 		int nloop = 1;
 		BOOL bUnique = FALSE;
@@ -7939,7 +7939,7 @@ BOOL CMover::DropItem( CMover* pAttacker )
                             nNumGold    = nNumGold * nPenyaRate / 100 * npenyafaktor; 
 #else // __DST_PENYA 
                             nNumGold    = nNumGold * nPenyaRate / 100; 
-#endif // __DST_PENYA  
+#endif // __DST_PENYA    
 	#ifdef __S1108_BACK_END_SYSTEM
 							nNumGold	= (int)( nNumGold * prj.m_fGoldDropRate * lpMoverProp->m_fPenya_Rate );
 							if( nNumGold == 0 )
@@ -8520,7 +8520,7 @@ BOOL CMover::IsVendorNPC()
 		if( pCharacter->m_venderItemAry2[i].GetSize() )
 			return TRUE;
 	}
-	#ifdef __EXTENDED_CURRENCY // IKnow zu viele for schleifen hdf XD	
+#ifdef __EXTENDED_CURRENCY // IKnow zu viele for schleifen hdf XD	
 	if(pCharacter->m_nVenderType == 2) // Farm Chips
 	for( int i = 0; i < MAX_VENDOR_INVENTORY_TAB; i++ )
 	{
@@ -11849,9 +11849,8 @@ BOOL CMover::SetDataMTE( const char* alphaTex, const char* eff2ndTex )
 }
 
 #endif //__BS_EFFECT_LUA
-
 #ifdef __EXTENDED_CURRENCY
-int CMover::GetChipFarmNum()
+int CMover::GetChipFarmNum( void )
 {
 	int nCount	= 0;
 	for( int i = 0; i < m_Inventory.GetMax(); i++ )
@@ -11866,7 +11865,7 @@ int CMover::GetChipFarmNum()
 	return nCount;
 }
 
-int CMover::GetChipLgNum()
+int CMover::GetChipLgNum( void )
 {
 	int nCount	= 0;
 	for( int i = 0; i < m_Inventory.GetMax(); i++ )
@@ -11881,7 +11880,7 @@ int CMover::GetChipLgNum()
 	return nCount;
 }
 
-int CMover::GetChipDonateNum()
+int CMover::GetChipDonateNum( void )
 {
 	int nCount	= 0;
 	for( int i = 0; i < m_Inventory.GetMax(); i++ )
@@ -11896,7 +11895,6 @@ int CMover::GetChipDonateNum()
 	return nCount;
 }
 #endif // __EXTENDED_CURRENCY
-
 #if __VER >= 12 // __LORD
 int CMover::GetPerinNum( void )
 {

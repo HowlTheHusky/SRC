@@ -392,10 +392,10 @@ typedef struct tagCHARACTER
 #if __VER >= 11 // __CSC_VER11_3
 	int				m_nVenderType;
 	CPtrArray		m_venderItemAry2[ 4 ];
-	#ifdef __EXTENDED_CURRENCY
-	CPtrArray		m_venderItemAry4[ 4 ];
-	CPtrArray		m_venderItemAry5[ 4 ];
-	CPtrArray		m_venderItemAry6[ 4 ];
+#ifdef __EXTENDED_CURRENCY
+CPtrArray		m_venderItemAry4[ 4 ];
+CPtrArray		m_venderItemAry5[ 4 ];
+CPtrArray		m_venderItemAry6[ 4 ];
 #endif // __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 #ifdef __NPC_BUFF

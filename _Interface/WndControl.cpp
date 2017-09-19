@@ -4808,15 +4808,11 @@ BOOL CWndComboBox::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 // manipulating listbox items
 int CWndComboBox::AddString( LPCTSTR lpszString )
 {
-    int nNum = m_wndListBox.AddString( lpszString );
-    CRect rect = m_wndListBox.GetWindowRect( TRUE );
- 
-    if(nNum > 10)
-        nNum = 10;
-    DEBUG_ONLY(IRALog::GetInstance()->Debug("CWndComboBox::AddString : nNum[%d]", nNum));
-    rect.bottom = rect.top + ( ( nNum + 1 ) * ( m_pFont->GetMaxHeight() + 3 ) ) + 8;
-    m_wndListBox.SetWndRect( rect );
-    return nNum;
+	int nNum = m_wndListBox.AddString( lpszString );
+	CRect rect = m_wndListBox.GetWindowRect( TRUE );
+	rect.bottom = rect.top + ( ( nNum + 1 ) * ( m_pFont->GetMaxHeight() + 3 ) ) + 8;
+	m_wndListBox.SetWndRect( rect );
+	return nNum;
 }
 int CWndComboBox::DeleteString( UINT nIndex )
 {

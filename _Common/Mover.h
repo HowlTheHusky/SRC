@@ -122,6 +122,11 @@ const DWORD NEXT_TICK_RECOVERYSTAND = SEC(3);
 
 #endif	//__LEGEND	//	9차 전승시스템	Neuz, World, Trans
 
+#ifdef __EXTENDED_CURRENCY
+	int						GetChipFarmNum();
+	int						GetChipLgNum();
+	int						GetChipDonateNum();
+#endif // __EXTENDED_CURRENCY
 
 /// Replace함수에서 사용하는 타입 	
 enum REPLACE_TYPE
@@ -942,12 +947,6 @@ public:
 	static BOOL		DoEquip( int nSex, int nSkinSet, CItemElem* pItemElem, int nPart, const EQUIP_INFO & rEquipInfo, CItemContainer< CItemElem  >* pInventory, PEQUIP_INFO pEquipeInfo, CModelObject* pModel, BOOL bEquip, CMover *pMover );
 	static	float	GetItemEnduranceInfluence( int nEndurance );	
 	static	int		GetItemEnduranceWeight( int nEndurance );	
-
-	#ifdef __EXTENDED_CURRENCY
-	int						GetChipFarmNum();
-	int						GetChipLgNum();
-	int						GetChipDonateNum();
-	#endif // __EXTENDED_CURRENCY
 	
 	virtual	BOOL	SetIndex( LPDIRECT3DDEVICE9 pd3dDevice, DWORD dwIndex, BOOL bInitProp = FALSE, BOOL bDestParam = TRUE );
 	virtual BOOL	Read( CFileIO* pFile );
@@ -1161,6 +1160,9 @@ public:
 	int				GetGold();
 #if __VER >= 12 // __LORD
 	int		GetPerinNum( void );
+	int		GetChipLgNum ( void );
+	int		GetChipFarmNum ( void );
+	int		GetChipDonateNum ( void );
 	__int64		GetTotalGold( void );
 #ifdef __WORLDSERVER
 	int		RemoveTotalGold( __int64 iGold );	// 제거된 페린 개수
@@ -1186,6 +1188,14 @@ public:
 	int				GetFPRecovery();
 	int				GetNaturalArmor();
  	float			GetAttackSpeed();
+	int	 GetSpeedDepla();
+	int	 GetCriticalRate();
+	int	 GetSpellCastSpeed();
+	int	 GetReflectDamage();
+	int	 GetHitRate();
+	int	 GetBlockmelee();
+	int	 GetBlockRange();
+	int	 GetEsquiveRate();
 	float			GetCastingAniSpeed();
 	int				GetCastingTime( int nCastingTime );
 	float			GetDamageMultiplier( ATTACK_INFO* pInfo );

@@ -333,6 +333,15 @@ BOOL CSoundManager::Play( LPTSTR pszFileName, D3DXVECTOR3* pvPosition, D3DXVECTO
 		if( fRadian > 100.0f )
 			return FALSE;
 
+		else if (fRadian < 0.0)
+		{
+			D3DVECTOR vec;
+			m_pDSListener->GetPosition(&vec);
+			pSound->m_pBufferParams[dwIndex].vPosition.x = vec.x;
+			pSound->m_pBufferParams[dwIndex].vPosition.y = vec.y;
+			pSound->m_pBufferParams[dwIndex].vPosition.z = vec.z;
+		}
+
 		D3DXVECTOR3 Line1 = D3DXVECTOR3( 0.0f, 0.0f, -1.0f );
 		D3DXVECTOR3 Line2 = -vPos;
 		//Line2 = m_world.m_vCenter - Line2;

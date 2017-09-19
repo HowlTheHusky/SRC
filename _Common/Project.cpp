@@ -333,7 +333,7 @@ CProject::~CProject()
 			for( i = 0; i < lpCharacter->m_venderItemAry6[ j ].GetSize(); i++)
 				safe_delete( (LPVENDOR_ITEM)lpCharacter->m_venderItemAry6[ j ].GetAt(i) );
 		}
-#endif __EXTENDED_CURRENCY
+#endif // __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 		safe_delete( lpCharacter );
 	}
@@ -3180,7 +3180,7 @@ BOOL CProject::LoadCharacter( LPCTSTR szFileName )
 				pVendorItem->m_dwItemId = dwId;
 				lpCharacter->m_venderItemAry6[ nSlot ].Add( pVendorItem );
 			}
-#endif // __EXTENDED_CURRENCY
+			#endif // __EXTENDED_CURRENCY
 			else if( script.Token == "SetVenderType" )
 			{
 				script.GetToken();

@@ -2979,11 +2979,11 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 	{
 		CMover* pVendor = pUser->m_vtInfo.GetOther();
 		LPCHARACTER lpChar = prj.GetCharacter( pVendor->m_szCharacterKey );
-		#ifdef __EXTENDED_CURRENCY		
-		if( lpChar && lpChar->m_nVenderType != 1 && lpChar->m_nVenderType != 2 && lpChar->m_nVenderType != 3 && lpChar->m_nVenderType != 4)	// 1 - A¨ ≫oAI
+#ifdef __EXTENDED_CURRENCY		
+		if( lpChar && lpChar->m_nVenderType != 1 && lpChar->m_nVenderType != 2 && lpChar->m_nVenderType != 3 && lpChar->m_nVenderType != 4)	// 1 - 칩 상인
 			return;
 #else
-		if( lpChar && lpChar->m_nVenderType != 1 )	// 2 - A¨ ≫oAI
+		if( lpChar && lpChar->m_nVenderType != 1 )	// 2 - 칩 상인
 			return;
 #endif //__EXTENDED_CURRENCY
 
@@ -3039,7 +3039,6 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			return;
 		}
 #endif // __EXTENDED_CURRENCY
-
 		// 인벤토리가 꽉 찼을 때 
 		if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
 		{
@@ -3114,9 +3113,8 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			aLogItem.Gold_1 = (DWORD)( (-1) * (int)( (itemElem.GetChipCost() * nNum) ) );
 			OnLogItem( aLogItem, &itemElem, nNum );
 		}
-	}
-	#ifdef __EXTENDED_CURRENCY
-	if( lpChar && lpChar->m_nVenderType == 2 )
+#ifdef __EXTENDED_CURRENCY
+		if( lpChar && lpChar->m_nVenderType == 2 )
 		{
 			if( pUser->m_Inventory.IsFull( pItemElem, pItemElem->GetProp(), nNum ) )
 			{
@@ -3168,10 +3166,10 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 
 			if( pUser->CreateItem( &itemElem ) )
 			{
-				// ·I±× ³²±e
+				// 로그 남김
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_C", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3185,7 +3183,7 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			{
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_CF", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3249,10 +3247,10 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 
 			if( pUser->CreateItem( &itemElem ) )
 			{
-				// ·I±× ³²±e
+				// 로그 남김
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_C", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3266,7 +3264,7 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			{
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_CF", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3330,10 +3328,10 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 
 			if( pUser->CreateItem( &itemElem ) )
 			{
-				// ·I±× ³²±e
+				// 로그 남김
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_C", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3347,7 +3345,7 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 			{
 				LogItemInfo aLogItem;
 				aLogItem.Action = "B";
-				aLogItem.SendName = pUser->GetName();
+				aLogItem.SendName = pVendor->GetName();
 				CString strTemp;
 				strTemp.Format( "%s_CF", pVendor->GetName() );
 				aLogItem.RecvName = (LPCTSTR)strTemp;
@@ -3360,8 +3358,10 @@ void CDPSrvr::OnBuyChipItem( CAr & ar, DPID dpidCache, DPID dpidUser, LPBYTE lpB
 		}
 #endif // __EXTENDED_CURRENCY
 	}
+	}
 #ifdef __SYSSECURITY
 }
+
 catch(...)
 {
 	Error("Error on Line %d in %s",__LINE__,__FILE__);

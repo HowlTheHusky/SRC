@@ -1783,7 +1783,7 @@ BOOL CWndInventory::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 					#ifdef __EXTENDED_CURRENCY
 					else if(lpCharacter->m_nVenderType == 2)
 					{
-						if(g_pPlayer->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipFarmCost() >= 0) //±¸¸ACI·A´A C°¸nAC A¨°³¼o AI≫oA≫ °¡Ao°i AO´AAo E®AI.
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_SYS_SYS_SCR_PERIN ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipFarmCost() >= 0) //구매하려는 품목의 칩개수 이상을 가지고 있는지 확인.
 						{
 							SAFE_DELETE( m_pWndConfirmBuy );
 							m_pWndConfirmBuy = new CWndConfirmBuy;
@@ -1797,7 +1797,7 @@ BOOL CWndInventory::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 					}
 					else if(lpCharacter->m_nVenderType == 3)
 					{
-						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLUE ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipLgCost() >= 0) //±¸¸ACI·A´A C°¸nAC A¨°³¼o AI≫oA≫ °¡Ao°i AO´AAo E®AI.
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLUE ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipLgCost() >= 0) //구매하려는 품목의 칩개수 이상을 가지고 있는지 확인.
 						{
 							SAFE_DELETE( m_pWndConfirmBuy );
 							m_pWndConfirmBuy = new CWndConfirmBuy;
@@ -1811,7 +1811,7 @@ BOOL CWndInventory::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 					}
 					else if(lpCharacter->m_nVenderType == 4)
 					{
-						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLACK ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipDonateCost() >= 0) //±¸¸ACI·A´A C°¸nAC A¨°³¼o AI≫oA≫ °¡Ao°i AO´AAo E®AI.
+						if(g_pPlayer->m_Inventory.GetAtItemNum( II_CHP_BLACK ) - (int)((CItemElem*)lpShortcut->m_dwData)->GetChipDonateCost() >= 0) //구매하려는 품목의 칩개수 이상을 가지고 있는지 확인.
 						{
 							SAFE_DELETE( m_pWndConfirmBuy );
 							m_pWndConfirmBuy = new CWndConfirmBuy;
@@ -2998,6 +2998,14 @@ CWndCharInfo::CWndCharInfo()
 	m_nDEF = 0;
 	m_nCritical = 0;
 	m_nATKSpeed = 0;
+	m_nSpeedDepla = 0;
+	m_nCriticalRate = 0;
+	m_nSpellCastSpeed = 0;
+	m_nReflectDamage = 0;
+	m_nHitRate = 0;
+	m_nBlockmelee = 0;
+	m_nBlockRange = 0;
+	m_nEsquiveRate = 0;
 
 	m_bExpert = FALSE;
 	m_pWndChangeJob = NULL;
@@ -3189,6 +3197,7 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 	/////////////////////////// detail begin //////////////////////////////////
 	int nyAdd = 121;
 	int x = 5, nNextX = 100;
+	CString strMsg;
 
 	dwColor = D3DCOLOR_ARGB(255,0,0,0);
 	x = 50; y = 10 + nyAdd;
@@ -3209,10 +3218,22 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 	else
 		p2DRender->TextOut( x , y, g_pPlayer->GetShowDefense( FALSE ), dwColor ); y += nNext;
 
+		strMsg.Format( "%d%%", g_pPlayer->GetSpeedDepla() );
+		p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+		
+		strMsg.Format( "%d%%", g_pPlayer->GetCriticalRate() );
+		p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+		
+		strMsg.Format( "%d%%", g_pPlayer->GetSpellCastSpeed() );
+		p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+
+		strMsg.Format( "%d%%", g_pPlayer->GetReflectDamage() );
+		p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+
 	x = 140; y = 10 + nyAdd;
 
 	//크리티컬
-	CString strMsg;
+	//CString strMsg;
 	dwColor = D3DCOLOR_ARGB(255,0,0,0);
 	if(	m_nDexCount != 0 && GetVirtualCritical() != g_pPlayer->GetCriticalProb() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
 	{
@@ -3242,10 +3263,58 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 
 	strMsg.Format( "%d%%", int( fAttackSpeed*100.0f ) /2 );
 	p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+if(	GetVirtualHitRate() != g_pPlayer->GetHitRate() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
+	{
+		if( (g_nRenderCnt / 8) & 1 )	
+		{
+			dwColor = D3DCOLOR_ARGB(255,255,0,0);
+		}
+		strMsg.Format( "%d%%", GetVirtualHitRate() );
+	}
+	else
+		strMsg.Format( "%d%%", g_pPlayer->GetHitRate() );
+	p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+	
+if(	GetVirtualBlockmelee() != g_pPlayer->GetBlockmelee() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
+	{
+		if( (g_nRenderCnt / 8) & 1 )	
+		{
+			dwColor = D3DCOLOR_ARGB(255,255,0,0);
+		}
+		strMsg.Format( "%d%%", GetVirtualBlockmelee() );
+	}
+	else
+		strMsg.Format( "%d%%", g_pPlayer->GetBlockmelee() );
+	p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+
+if(	GetVirtualBlockRange() != g_pPlayer->GetBlockRange() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
+	{
+		if( (g_nRenderCnt / 8) & 1 )	
+		{
+			dwColor = D3DCOLOR_ARGB(255,255,0,0);
+		}
+		strMsg.Format( "%d%%", GetVirtualBlockRange() );
+	}
+	else
+		strMsg.Format( "%d%%", g_pPlayer->GetBlockRange() );
+	p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
+
+if(	GetVirtualEsquiveRate() != g_pPlayer->GetEsquiveRate() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
+	{
+		if( (g_nRenderCnt / 8) & 1 )	
+		{
+			dwColor = D3DCOLOR_ARGB(255,255,0,0);
+		}
+		strMsg.Format( "%d%%", GetVirtualEsquiveRate() );
+	}
+	else
+		strMsg.Format( "%d%%", g_pPlayer->GetEsquiveRate() );
+	p2DRender->TextOut( x , y, strMsg, dwColor ); y += nNext;
 
 	x =15; nNextX = 60;
+
 	// 아래부터 능력치 관련 
-	y = 52 + nyAdd;
+	y = 135 + nyAdd;
 	int StatYPos = 50;
 
 	if( g_pPlayer->m_nStr == g_pPlayer->GetStr() )
@@ -3380,7 +3449,17 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_DEFENCE), dwColor ); 
 	p2DRender->TextOut( 85, y, prj.GetText(TID_GAME_CHARACTER_15), dwColor ); y += nNext;
-	y += 12;
+
+	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_DEPLA), dwColor );
+	p2DRender->TextOut( 85, y, prj.GetText(TID_TOOLTIP_TOUCHER), dwColor ); y += nNext;	
+	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_DCC), dwColor );
+	p2DRender->TextOut( 85, y, prj.GetText(TID_TOOLTIP_BLOCKMELEE), dwColor ); y += nNext;	
+	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_INCANT), dwColor );
+	p2DRender->TextOut( 85, y, prj.GetText(TID_TOOLTIP_BLOCKDISTANCE), dwColor ); y += nNext;
+	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_RENVOI), dwColor );
+	p2DRender->TextOut( 85, y, prj.GetText(TID_TOOLTIP_ESQUIVE), dwColor ); y += nNext;
+
+	y += 27;
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_STR), dwColor ); y += nNext;
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_STA), dwColor ); y += nNext;
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_DEX), dwColor ); y += nNext;
@@ -3450,7 +3529,7 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 	//CRect rect = GetClientRect();
 	//rect.bottom -= 30;
 	int nyAdd2 = 284;
-	y = 15 + nyAdd2, nNext = 15;
+	y = 108 + nyAdd2, nNext = 15;
 	dwColor = D3DCOLOR_ARGB(255,0,0,0);
 	char szBuff[32];
 	int gap1 = 0;
@@ -3458,7 +3537,7 @@ void CWndCharInfo::OnDraw(C2DRender* p2DRender)
 	gap1 -= 10;
 	gap2 -= 10;
 	
-	p2DRender->TextOut( 60, 281, prj.GetText((TID_GAME_CHARACTTER_PVP0)), dwColor );
+	p2DRender->TextOut( 60, 362, prj.GetText((TID_GAME_CHARACTTER_PVP0)), dwColor );
 
 	strcpy( szBuff, g_pPlayer->GetFameName() );
 	if( IsEmpty(szBuff) ) {	szBuff[0] = '-'; szBuff[1] = NULL; }
@@ -3522,8 +3601,9 @@ void CWndCharInfo::OnInitialUpdate()
 	CRect rect3_3( x + ( size.cx / 2) + 10          , y, (x + ( size.cx / 2) + 10          ) + size.cx, y + size.cy );
 */
 	// 아래부터 능력치 관련 
+
 	int nyAdd = 121;
-	int posY = 49 + nyAdd;
+	int posY = 133 + nyAdd;
 	int posX = 128;
 
 	m_editStrCount.Create  ( g_Neuz.GetSafeHwnd(), 0, CRect( posX - 38, posY, posX - 4, posY + 16 ), this, 100 );
@@ -4006,6 +4086,93 @@ int CWndCharInfo::GetVirtualCritical()
 	}
 	return nCritical;
 }
+int CWndCharInfo::GetVirtualSpeedDepla()
+{
+	int nSpeedDepla;
+
+	nSpeedDepla	= g_pPlayer->GetParam( DST_SPEED, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+
+	return nSpeedDepla;
+}
+int CWndCharInfo::GetVirtualCriticalRate()
+{
+	int nCriticalRate;
+
+	nCriticalRate = g_pPlayer->GetParam( DST_CRITICAL_BONUS, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+
+	return nCriticalRate;
+}
+int CWndCharInfo::GetVirtualSpellCastSpeed()
+{
+	int nSpellCastSpeed;
+
+	nSpellCastSpeed = g_pPlayer->GetParam( DST_SPELL_RATE, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+
+	return nSpellCastSpeed;
+}
+
+int CWndCharInfo::GetVirtualReflectDamage()
+{
+	int nReflectDamage;
+
+	nReflectDamage = g_pPlayer->GetParam( DST_REFLECT_DAMAGE, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+#ifdef __JEFF_11
+	if( nReflectDamage < 0 )
+		nReflectDamage = 0;
+#endif	// __JEFF_11
+	return nReflectDamage;
+}
+
+int CWndCharInfo::GetVirtualHitRate()
+{
+	int nHitRate;
+
+	nHitRate = g_pPlayer->GetParam( DST_ADJ_HITRATE, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+
+	return nHitRate;
+}
+
+int CWndCharInfo::GetVirtualBlockmelee()
+{
+	int nBlockmelee;
+
+	nBlockmelee = g_pPlayer->GetParam( DST_BLOCK_MELEE, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+#ifdef __JEFF_11
+	if( nBlockmelee < 0 )
+		nBlockmelee = 0;
+	if( nBlockmelee > 96 )
+		nBlockmelee = 96;
+#endif	// __JEFF_11
+	return nBlockmelee;
+}
+
+int CWndCharInfo::GetVirtualBlockRange()
+{
+	int nBlockRange;
+
+	nBlockRange = g_pPlayer->GetParam( DST_BLOCK_RANGE, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+#ifdef __JEFF_11
+	if( nBlockRange < 0 )
+		nBlockRange = 0;
+	if( nBlockRange > 96 )
+		nBlockRange = 96;
+#endif	// __JEFF_11
+	return nBlockRange;
+}
+
+int CWndCharInfo::GetVirtualEsquiveRate()
+{
+	int nEsquiveRate;
+	nEsquiveRate	= (int)( ( g_pPlayer->GetDex() * 0.5 ) );
+	nEsquiveRate = g_pPlayer->GetParam( DST_PARRY, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+#ifdef __JEFF_11
+	if( nEsquiveRate < 0 )
+		nEsquiveRate = 0;
+#endif	// __JEFF_11
+	return nEsquiveRate;
+}
+
+#endif
 
 
 float CWndCharInfo::GetVirtualATKSpeed()
@@ -4231,7 +4398,7 @@ void CWndHonor::OnLButtonDown( UINT nFlags, CPoint point )
 
 
 }
-#endif // __RENEW_CHARINFO
+//#endif // __RENEW_CHARINFO
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5078,6 +5245,7 @@ void CWndCharacterDetail::OnDraw(C2DRender* p2DRender)
 #ifdef _KWCSC_UPDATE
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_HITRATE), dwColor ); y += nNext;
 #endif
+	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_HITRATE), dwColor ); y += nNext;
 	y += 12;
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_STR), dwColor ); y += nNext;
 	p2DRender->TextOut( 7, y, prj.GetText(TID_TOOLTIP_STA), dwColor ); y += nNext;
@@ -5226,6 +5394,14 @@ CWndCharacterDetail2::CWndCharacterDetail2()
 	m_nDEF = 0;
 	m_nCritical = 0;
 	m_nATKSpeed = 0;
+	m_nSpeedDepla = 0;
+	m_nCriticalRate = 0;
+	m_nSpellCastSpeed = 0;
+	m_nReflectDamage = 0;
+	m_nHitRate = 0;
+	m_nBlockmelee = 0;
+	m_nBlockRange = 0;
+	m_nEsquiveRate = 0;
 }
 
 CWndCharacterDetail2::~CWndCharacterDetail2()
@@ -5302,7 +5478,17 @@ void CWndCharacterDetail2::OnDraw(C2DRender* p2DRender)
 	}
 	else
 		p2DRender->TextOut( x , y, g_pPlayer->GetShowDefense( FALSE ), dwColor ); y += nNext;
-
+	
+	if(	GetVirtualSpeedDepla() != g_pPlayer->GetSpeedDepla() ) //임의 스탯이 변경되고 현재 능력치랑 다를 경우
+	{
+		if( (g_nRenderCnt / 8) & 1 )	
+		{
+			dwColor = D3DCOLOR_ARGB(255,255,0,0);
+		}
+		p2DRender->TextOut( x , y, GetVirtualSpeedDepla(), dwColor ); y += nNext;
+	}
+	else
+		p2DRender->TextOut( x , y, g_pPlayer->GetSpeedDepla(), dwColor ); y += nNext;
 	x = 130; y = 10;
 
 	//크리티컬
@@ -5852,7 +6038,17 @@ int CWndCharacterDetail2::GetVirtualCritical()
 	}
 	return nCritical;
 }
+int CWndCharacterDetail2::GetVirtualSpeedDepla()
+{
+	int nSpeedDepla;
 
+	nSpeedDepla	= g_pPlayer->GetParam( DST_CHR_CHANCECRITICAL, 0 );	// 크리티컬 확률을 높여주는 스킬관련 
+#ifdef __JEFF_11
+	if( nSpeedDepla < 0 )
+		nSpeedDepla	= 0;
+#endif	// __JEFF_11
+	return nSpeedDepla;
+}
 float CWndCharacterDetail2::GetVirtualATKSpeed()
 {
 	float fSpeed = 1.0f;
@@ -13496,7 +13692,7 @@ void CWndInventory::RunUpgrade( CItemBase* pItem )
 				if( ( static_cast<CItemElem*>( pItem ) )->IsCollector( TRUE ) || pItem->GetProp()->dwItemKind2 == IK2_JEWELRY )
 				{
 					m_pUpgradeItem = pItem;
-					m_dwEnchantWaitTime = g_tmCurrent + SEC(0.5);
+					m_dwEnchantWaitTime = g_tmCurrent + SEC(4);
 					return;
 				}
 #endif	// __SYS_COLLECTING

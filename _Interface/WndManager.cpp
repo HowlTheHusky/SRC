@@ -30,10 +30,10 @@ extern CGuildCombat g_GuildCombatMng;
 #include "wndbagex.h"
 #endif	// __SYS_POCKET
 
-#ifdef __DST_PENYA
-#define DST_PENYA	95
-#define TID_TOOLTIP_PENYA 1337
-#endif
+//#ifdef __DST_PENYA
+//#define DST_PENYA	95
+//#define TID_TOOLTIP_PENYA 1337
+//#endif
 
 #if __VER >= 13 // __COUPLE_1117
 #include "couplehelper.h"
@@ -5748,22 +5748,22 @@ void CWndMgr::PutItemGold( CMover* pMover, CItemElem* pItemElem, CEditString* pE
 			if(lpCharacter && lpCharacter->m_nVenderType == 2)
 			{
 				CString temp;
-				temp.Format(" %s", prj.GetText( TID_GAME_PERIN ));
+				temp.Format(" %s", prj.GetText( TID_GAME_CANNT_BY_PERIN ));
 				strTemp += temp;
 			}
 			if(lpCharacter && lpCharacter->m_nVenderType == 3)
 			{
 				CString temp;
-				temp.Format(" %s", prj.GetText( TID_GAME_BLUE ));
+				temp.Format(" %s", prj.GetText( TID_GAME_CANNT_BY_BLUE ));
 				strTemp += temp;
 			}
 			if(lpCharacter && lpCharacter->m_nVenderType == 4)
 			{
 				CString temp;
-				temp.Format(" %s", prj.GetText( TID_GAME_BLACK ));
+				temp.Format(" %s", prj.GetText( TID_GAME_CANNT_BY_BLACK ));
 				strTemp += temp;
 			}
-#endif // __EXTENDED_CURRENCY
+			#endif // __EXTENDED_CURRENCY
 #endif //__CSC_VER11_3
 			pEdit->AddString( "\n" );
 			pEdit->AddString( strTemp, dwItemColor[g_Option.m_nToolTipText].dwGold );
