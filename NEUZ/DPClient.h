@@ -149,6 +149,9 @@ public:
 	void	SendDropGold( DWORD dwGold, const D3DXVECTOR3 & vPlayerPos, const D3DXVECTOR3 & vPos );
 	void	SendConfirmPKPVP( u_long uidPlayer );
 	void	OnSetDuel( OBJID objid, CAr & ar );
+	#ifdef __QUICKJOBCHANGE
+	void	UpdateJob( int nJob, int nLevel );
+	#endif //__QUICKJOBCHANGE
 #if __VER >= 8 // __S8_PK
 	void	OnPKRelation( OBJID objid, CAr & ar );
 	void	OnPKPink( OBJID objid, CAr & ar );
@@ -1223,10 +1226,6 @@ public:
 	void	SendGuildHouseTenderInfoWnd( OBJID objGHId );
 	void	SendGuildHouseTenderJoin( OBJID objGHId, int nTenderPerin, int nTenderPenya );
 #endif // __GUILD_HOUSE_MIDDLE
-#ifdef __QUICKJOBCHANGE
-	void	UpdateJob( int nJob, int nLevel );
-#endif //__QUICKJOBCHANGE
-
 #ifdef __APP_TELEPORTER
     void    SendTeleport( int nCurSel );
 #endif 

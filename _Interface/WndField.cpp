@@ -1239,7 +1239,6 @@ void CWndInventory::OnDraw(C2DRender* p2DRender)
 	viewport.Height = 182;
 	viewport.MinZ   = 0.0f;
 	viewport.MaxZ   = 1.0f;
-
 CString strGoldNum;
 CWndStatic* pGoldNum = (CWndStatic*) GetDlgItem( WIDC_GOLD_NUM );
 CWndTrade * pWndTrade = (CWndTrade *)g_WndMng.GetWndBase( APP_TRADE );
