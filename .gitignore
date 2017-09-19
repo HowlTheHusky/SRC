@@ -4,3 +4,7 @@ __all/all.ncb
 __all/all.suo
 __all/all.ncb
 *.vcproj
+*.vcproj
+*.vcproj
+*.suo
+*.ncb
