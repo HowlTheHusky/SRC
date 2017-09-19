@@ -65,6 +65,7 @@
 #ifdef __HELP_BUG_FIX
 #include "WndHelp.h"
 #endif //__HELP_BUG_FIX
+#include "WndChangeJobEx.h"
 
 #if __VER >= 13 // __RAINBOW_RACE
 #include "WndRainbowRace.h"
@@ -360,9 +361,6 @@ public:
 	CWndExtraction* m_pWndExtraction;
 	CWndChangeWeapon* m_pWndChangeWeapon;
 	CWndPetStatus* m_pWndPetStatus;
-	#ifdef __QUICKJOBCHANGE
-	CWndJobChangeEx* m_pJobChangeEx;
-	#endif //__QUICKJOBCHANGE
 
 	CWndFoodConfirm* m_pWndFoodConfirm;
 	CWndPetMiracle* m_pWndPetMiracle;
@@ -512,6 +510,7 @@ public:
 #endif //__EXT_ENCHANT
 
 	CWndReSkillWarning*			  m_pWndReSkillWarning;	
+	CWndJobChangeEx*			m_pJobChangeEx;
 	CWndFontEdit*				  m_pWndFontEdit;
 
 	CWndPartyChangeName* m_pWndPartyChangeName;
