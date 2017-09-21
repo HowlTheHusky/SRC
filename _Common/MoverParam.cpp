@@ -1706,14 +1706,29 @@ BOOL CMover::SetFxp( int nFxp, int nFlightLv )
 	return FALSE;
 }
 
+
+
+void CMover::SetEquipDstParam()
+{
+	if( IsPlayer() ) 
+	{
+		CItemElem* pItemElem;
+		for( int i = 0; i < MAX_HUMAN_PARTS; i++ )
+		{
+			pItemElem = GetEquipItem( i ); //m_Inventory.GetAtId( m_adwEquipment[ i ] );
+			if( pItemElem )
+				SetDestParam( pItemElem->m_dwItemId, FALSE );	//don't send
+		}
+	}
+}
+
+
 BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 {
-#ifdef __QUICKJOBCHANGE
 	m_nExp1		= nExp1;
 
 	if( IsInvalidObj(this) )
 		return 0;
-		
 #ifdef __CLIENT
 	if( (GetLevel() == 120) && GetExpPercent() == 9999 )
 	{
@@ -1722,22 +1737,11 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 		g_WndMng.m_pJobChangeEx->Initialize();
 	}
 #endif
-
 	if( nLevel > m_nLevel )
 	{
-#else // __QUICKJOBCHANGE
-
-	m_nExp1		= nExp1;
-
-	if( IsInvalidObj(this) )
-		return 0;
-
-	if( nLevel > m_nLevel )
-	{
-#endif //__QUICKJOBCHANGE
 #ifdef __CLIENT
- 		// 15렙 되면 더이상 초보자가 아니므로 자동으로 초보자도움말 끄자.
-		if( nLevel == 15 )		// 1차전직레벨 15에 대한 define 있으면 그걸로 바꿔주. -xuzhu-
+ 		// 15? ?? ??? ???? ???? ???? ?????? ??.
+		if( nLevel == 15 )		// 1????? 15? ?? define ??? ??? ???. -xuzhu-
 			g_Option.m_nInstantHelp = 0;
  		
 		PutLvUpSkillName_1(nLevel);
@@ -1809,14 +1813,12 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 				if( GetLevel() != 1 )
 					pWndWorld->m_pWndGuideSystem->GuideStart(FALSE);
 			#endif
-				#ifdef __QUICKJOBCHANGE
-				if( GetLevel() == 15 || GetLevel() == 60 )
-				{
-				SAFE_DELETE( g_WndMng.m_pJobChangeEx );
-				g_WndMng.m_pJobChangeEx = new CWndJobChangeEx;
-				g_WndMng.m_pJobChangeEx->Initialize();
+if( GetLevel() == 15 || GetLevel() == 60 /*|| ((GetLevel() == 120 || GetLevel() == 129) && GetExpPercent() >= 9900 ) */)
+{
+	SAFE_DELETE( g_WndMng.m_pJobChangeEx );
+	g_WndMng.m_pJobChangeEx = new CWndJobChangeEx;
+	g_WndMng.m_pJobChangeEx->Initialize();
 }
-#endif //__QUICKJOBCHANGE
 				switch(GetLevel())
 				{
 			#if __VER >= 12 // __MOD_TUTORIAL
@@ -1868,7 +1870,7 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 
 		return TRUE;
 	}
-	else if( nLevel < m_nLevel )	// 레벨 다운이 되었을때.
+	else if( nLevel < m_nLevel )	// ?? ??? ????.
 	{
 		m_nLevel	= nLevel;
 		if( nLevel < 20 )
@@ -1926,23 +1928,6 @@ BOOL CMover::SetExperience( EXPINTEGER nExp1, int nLevel )
 
 	return FALSE;
 }
-
-
-void CMover::SetEquipDstParam()
-{
-	if( IsPlayer() ) 
-	{
-		CItemElem* pItemElem;
-		for( int i = 0; i < MAX_HUMAN_PARTS; i++ )
-		{
-			pItemElem = GetEquipItem( i ); //m_Inventory.GetAtId( m_adwEquipment[ i ] );
-			if( pItemElem )
-				SetDestParam( pItemElem->m_dwItemId, FALSE );	//don't send
-		}
-	}
-}
-
-
 /////////////////////////////////////////////////////////////////////////////// aaaaaaaaa
 int CMover::SumEquipDefenseAbility( LONG* pnMin, LONG* pnMax )
 {

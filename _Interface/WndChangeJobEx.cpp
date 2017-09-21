@@ -1,3 +1,7 @@
+//add this to project Neuz
+
+
+
 #include "StdAfx.h"
 #include "WndChangeJobEx.h"
 #include "DPClient.h"
@@ -58,7 +62,7 @@ BOOL CWndJobChangeEx::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 {
 	switch( nID )
 	{
-	case WIDC_BUTTON4:
+	case WIDC_BUTTON1:
 		g_DPlay.UpdateJob( nCurJob, nNewLv );
 		Destroy();
 		break;
@@ -76,7 +80,8 @@ BOOL CWndJobChangeEx::OnChildNotify( UINT message, UINT nID, LRESULT* pLResult )
 
 void CWndJobChangeEx::OnDraw( C2DRender* p2DRender )
 {
-	char* szInfo[] = { "Error", "Mercenaries können später zu Blade oder Knight werden.",
+	char* szInfo[] = { 
+"Error", "Mercenaries können später zu Knight oder Blade werden.",
 "Acrobats können später Jester oder Ranger werden.",
 "Assists können später Ringmaster oder Billposter werden.",
 "Magicians können später Psykeeper oder Elementor werden.",
@@ -158,7 +163,7 @@ void CWndJobChangeEx::OnDraw( C2DRender* p2DRender )
 	case 13: case 23: case 31:
 		nJobPic->SetTexture(D3DDEVICE, MakePath( DIR_THEME, "SlotElem.bmp" ), TRUE );
 		break;
-	/*case 32:
+	case 32:
 		nJobPic->SetTexture(D3DDEVICE, MakePath( DIR_THEME, "SlotLord.bmp" ), TRUE );
 		break;
 	case 33:
@@ -181,7 +186,7 @@ void CWndJobChangeEx::OnDraw( C2DRender* p2DRender )
 		break;
 	case 39:
 		nJobPic->SetTexture(D3DDEVICE, MakePath( DIR_THEME, "SlotElel.bmp" ), TRUE );
-		break;*/
+		break;
 	default:
 		return;
 		break;
